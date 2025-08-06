@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import { useI18n } from 'vue-i18n'
+import { useLangStore } from '@/stores/lang'
+
+const { t } = useI18n()
+
+const langStore = useLangStore()
+
+const changeLanguage = (lang: string) => {
+  langStore.setAcceptLanguage(lang)
+}
 </script>
 
 <template>
@@ -8,12 +18,15 @@ import HelloWorld from './components/HelloWorld.vue'
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <HelloWorld :msg="t('hello')" />
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
+      <button @click="changeLanguage('en')">English</button>
+      <button @click="changeLanguage('ja')">日本語</button>
+      <button @click="changeLanguage('zh')">中文</button>
     </div>
   </header>
 
