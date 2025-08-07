@@ -1,20 +1,11 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-import { useI18n } from 'vue-i18n'
-import { useLangStore } from '@/stores/lang'
-
-const { t } = useI18n()
-
-const langStore = useLangStore()
-
-const changeLanguage = (lang: string) => {
-  langStore.setAcceptLanguage(lang)
-}
+// import { RouterView } from 'vue-router'
+import AppBar from './components/AppBar.vue'
 </script>
 
 <template>
-  <header>
+  <AppBar />
+  <!-- <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
@@ -28,13 +19,13 @@ const changeLanguage = (lang: string) => {
       <button @click="changeLanguage('ja')">日本語</button>
       <button @click="changeLanguage('zh')">中文</button>
     </div>
-  </header>
+  </header> -->
 
-  <RouterView />
+  <!-- <RouterView /> -->
 </template>
 
 <style scoped>
-header {
+/* header {
   line-height: 1.5;
   max-height: 100vh;
 }
@@ -94,5 +85,5 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
-}
+} */
 </style>

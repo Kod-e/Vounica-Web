@@ -1,3 +1,12 @@
 {
-  "hello": "Hello"
+  "hello": "Hello",
+  "home": "Home",
+  "mistake": "Mistake",
+  "vocab": "Vocab",
+  "grammar": "Grammar",
+  "story": "Story",
+  "memory": "Memory",
+  "languageName": "English",
+  "profile": "Profile",
+  "signOut": "Sign Out"
 }
