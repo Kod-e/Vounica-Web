@@ -217,14 +217,14 @@ const user = {
   name: 'name not set',
   email: 'email@notset.ac.jp',
 }
-const navigation = [
+const navigation = computed(() => [
   { name: t('home'), href: '#', current: true },
   { name: t('mistake'), href: '#', current: false },
   { name: t('vocab'), href: '#', current: false },
   { name: t('grammar'), href: '#', current: false },
   { name: t('story'), href: '#', current: false },
   { name: t('memory'), href: '#', current: false },
-]
+])
 const langStore = useLangStore()
 
 const languageName = (code: string) => {
@@ -246,8 +246,8 @@ function selectTargetLang(code: string) {
   langStore.setTargetLanguage(code)
 }
 
-const userNavigation = [
+const userNavigation = computed(() => [
   { name: t('profile'), href: '#' },
   { name: t('signOut'), href: '#' },
-]
+])
 </script>
