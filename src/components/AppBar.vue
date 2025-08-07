@@ -128,6 +128,75 @@
               </Menu>
             </div>
           </div>
+          <!-- mobile language selectors placed in center of top bar -->
+          <div class="flex items-center space-x-2 md:hidden">
+            <Menu as="div" class="relative">
+              <MenuButton
+                class="inline-flex items-center rounded-md bg-gray-800 px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800"
+              >
+                {{ acceptLabel }}
+                <ChevronDownIcon class="-mr-1 ml-2 size-5 text-gray-400" aria-hidden="true" />
+              </MenuButton>
+              <transition
+                enter-active-class="transition ease-out duration-100"
+                enter-from-class="transform opacity-0 scale-95"
+                enter-to-class="transform opacity-100 scale-100"
+                leave-active-class="transition ease-in duration-75"
+                leave-from-class="transform opacity-100 scale-100"
+                leave-to-class="transform opacity-0 scale-95"
+              >
+                <MenuItems
+                  class="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-hidden"
+                >
+                  <MenuItem v-for="code in languageCodes" :key="code" v-slot="{ active }">
+                    <button
+                      @click="selectAcceptLang(code)"
+                      :class="[
+                        active ? 'bg-gray-100' : '',
+                        'block w-full px-4 py-2 text-left text-sm text-gray-700',
+                      ]"
+                    >
+                      {{ languageName(code) }}
+                    </button>
+                  </MenuItem>
+                </MenuItems>
+              </transition>
+            </Menu>
+
+            <Menu as="div" class="relative">
+              <MenuButton
+                class="inline-flex items-center rounded-md bg-gray-800 px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800"
+              >
+                {{ targetLabel }}
+                <ChevronDownIcon class="-mr-1 ml-2 size-5 text-gray-400" aria-hidden="true" />
+              </MenuButton>
+              <transition
+                enter-active-class="transition ease-out duration-100"
+                enter-from-class="transform opacity-0 scale-95"
+                enter-to-class="transform opacity-100 scale-100"
+                leave-active-class="transition ease-in duration-75"
+                leave-from-class="transform opacity-100 scale-100"
+                leave-to-class="transform opacity-0 scale-95"
+              >
+                <MenuItems
+                  class="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-hidden"
+                >
+                  <MenuItem v-for="code in languageCodes" :key="code" v-slot="{ active }">
+                    <button
+                      @click="selectTargetLang(code)"
+                      :class="[
+                        active ? 'bg-gray-100' : '',
+                        'block w-full px-4 py-2 text-left text-sm text-gray-700',
+                      ]"
+                    >
+                      {{ languageName(code) }}
+                    </button>
+                  </MenuItem>
+                </MenuItems>
+              </transition>
+            </Menu>
+          </div>
+
           <div class="-mr-2 flex md:hidden">
             <!-- Mobile menu button -->
             <DisclosureButton
@@ -180,6 +249,7 @@
             >
           </div>
         </div>
+        <!-- removed language dropdowns inside DisclosurePanel since now shown on top bar -->
       </DisclosurePanel>
     </Disclosure>
     <main>
