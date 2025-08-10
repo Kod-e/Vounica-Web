@@ -61,6 +61,34 @@
         }
       }
     },
+    "/v1/auth/guest": {
+      "get": {
+        "tags": ["v1", "auth"],
+        "summary": "Guest",
+        "operationId": "guest_v1_auth_guest_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/TokenSchema" } }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["v1", "auth"],
+        "summary": "Guest",
+        "operationId": "guest_v1_auth_guest_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/TokenSchema" } }
+            }
+          }
+        }
+      }
+    },
     "/v1/auth/login": {
       "post": {
         "tags": ["v1", "auth"],
