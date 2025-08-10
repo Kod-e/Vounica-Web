@@ -1,0 +1,2576 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "Vounica API", "description": "Vounica API", "version": "0.1.0" },
+  "paths": {
+    "/v1/health": {
+      "get": {
+        "tags": ["v1"],
+        "summary": "Health",
+        "description": "Health check endpoint",
+        "operationId": "health_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/v1/db-test": {
+      "get": {
+        "tags": ["v1"],
+        "summary": "Db Test",
+        "description": "Test database connection endpoint",
+        "operationId": "db_test_v1_db_test_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/v1/auth/register": {
+      "post": {
+        "tags": ["v1", "auth"],
+        "summary": "Register",
+        "operationId": "register_v1_auth_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/RegisterSchema" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RegisterResponseSchema" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/login": {
+      "post": {
+        "tags": ["v1", "auth"],
+        "summary": "Login",
+        "operationId": "login_v1_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/LoginSchema" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/TokenSchema" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/refresh": {
+      "post": {
+        "tags": ["v1", "auth"],
+        "summary": "Refresh",
+        "operationId": "refresh_v1_auth_refresh_post",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/RefreshSchema" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RefreshResponseSchema" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/memory/create": {
+      "post": {
+        "tags": ["v1", "memory"],
+        "summary": "Create Memory",
+        "operationId": "create_memory_v1_memory_create_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/MemoryCreateSchema" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MemorySchema" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/memory/delete": {
+      "delete": {
+        "tags": ["v1", "memory"],
+        "summary": "Delete Memory",
+        "operationId": "delete_memory_v1_memory_delete_delete",
+        "parameters": [
+          {
+            "name": "memory_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer", "title": "Memory Id" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MemorySchema" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/memory/update": {
+      "post": {
+        "tags": ["v1", "memory"],
+        "summary": "Update Memory",
+        "operationId": "update_memory_v1_memory_update_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/MemoryUpdateSchema" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MemorySchema" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/memory/page": {
+      "get": {
+        "tags": ["v1", "memory"],
+        "summary": "Get Memories",
+        "operationId": "get_memories_v1_memory_page_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 50, "title": "Limit" }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 0, "title": "Offset" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/MemorySchema" },
+                  "title": "Response Get Memories V1 Memory Page Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/memory/categories": {
+      "get": {
+        "tags": ["v1", "memory"],
+        "summary": "Get Memory Categories",
+        "operationId": "get_memory_categories_v1_memory_categories_get",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "title": "Response Get Memory Categories V1 Memory Categories Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/memory/category/page": {
+      "get": {
+        "tags": ["v1", "memory"],
+        "summary": "Get Memory By Category",
+        "operationId": "get_memory_by_category_v1_memory_category_page_get",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Category" }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 50, "title": "Limit" }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 0, "title": "Offset" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/MemorySchema" },
+                  "title": "Response Get Memory By Category V1 Memory Category Page Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/memory/categories/number": {
+      "get": {
+        "tags": ["v1", "memory"],
+        "summary": "Get Memory Categories With Number",
+        "operationId": "get_memory_categories_with_number_v1_memory_categories_number_get",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": { "type": "integer" },
+                  "title": "Response Get Memory Categories With Number V1 Memory Categories Number Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/grammar/create": {
+      "post": {
+        "tags": ["v1", "grammar"],
+        "summary": "Create Grammar",
+        "operationId": "create_grammar_v1_grammar_create_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/GrammarCreateSchema" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/GrammarSchema" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/grammar/delete": {
+      "delete": {
+        "tags": ["v1", "grammar"],
+        "summary": "Delete Grammar",
+        "operationId": "delete_grammar_v1_grammar_delete_delete",
+        "parameters": [
+          {
+            "name": "grammar_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer", "title": "Grammar Id" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/GrammarSchema" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/grammar/update": {
+      "post": {
+        "tags": ["v1", "grammar"],
+        "summary": "Update Grammar",
+        "operationId": "update_grammar_v1_grammar_update_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/GrammarUpdateSchema" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/GrammarSchema" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/grammar/page": {
+      "get": {
+        "tags": ["v1", "grammar"],
+        "summary": "Get Grammars",
+        "operationId": "get_grammars_v1_grammar_page_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 50, "title": "Limit" }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 0, "title": "Offset" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/GrammarSchema" },
+                  "title": "Response Get Grammars V1 Grammar Page Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mistake/create": {
+      "post": {
+        "tags": ["v1", "mistake"],
+        "summary": "Create Mistake",
+        "operationId": "create_mistake_v1_mistake_create_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/MistakeCreateSchema" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MistakeSchema" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mistake/delete": {
+      "delete": {
+        "tags": ["v1", "mistake"],
+        "summary": "Delete Mistake",
+        "operationId": "delete_mistake_v1_mistake_delete_delete",
+        "parameters": [
+          {
+            "name": "mistake_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer", "title": "Mistake Id" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MistakeSchema" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mistake/update": {
+      "post": {
+        "tags": ["v1", "mistake"],
+        "summary": "Update Mistake",
+        "operationId": "update_mistake_v1_mistake_update_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/MistakeSchema" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MistakeSchema" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mistake/page": {
+      "get": {
+        "tags": ["v1", "mistake"],
+        "summary": "Get Mistakes",
+        "operationId": "get_mistakes_v1_mistake_page_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 50, "title": "Limit" }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 0, "title": "Offset" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/MistakeSchema" },
+                  "title": "Response Get Mistakes V1 Mistake Page Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mistake/recent": {
+      "get": {
+        "tags": ["v1", "mistake"],
+        "summary": "Get Recent Mistakes",
+        "operationId": "get_recent_mistakes_v1_mistake_recent_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 50, "title": "Limit" }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 0, "title": "Offset" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/MistakeSchema" },
+                  "title": "Response Get Recent Mistakes V1 Mistake Recent Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/story/create": {
+      "post": {
+        "tags": ["v1", "story"],
+        "summary": "Create Story",
+        "operationId": "create_story_v1_story_create_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/StoryCreateSchema" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/StorySchema" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/story/delete": {
+      "delete": {
+        "tags": ["v1", "story"],
+        "summary": "Delete Story",
+        "operationId": "delete_story_v1_story_delete_delete",
+        "parameters": [
+          {
+            "name": "story_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer", "title": "Story Id" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/StorySchema" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/story/update": {
+      "post": {
+        "tags": ["v1", "story"],
+        "summary": "Update Story",
+        "operationId": "update_story_v1_story_update_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/StorySchema" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/StorySchema" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/story/page": {
+      "get": {
+        "tags": ["v1", "story"],
+        "summary": "Get Stories",
+        "operationId": "get_stories_v1_story_page_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 50, "title": "Limit" }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 0, "title": "Offset" }
+          },
+          {
+            "name": "only_target_language",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "boolean", "default": false, "title": "Only Target Language" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/StorySchema" },
+                  "title": "Response Get Stories V1 Story Page Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/vocab/create": {
+      "post": {
+        "tags": ["v1", "vocab"],
+        "summary": "Create Vocab",
+        "operationId": "create_vocab_v1_vocab_create_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/VocabCreateSchema" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/VocabSchema" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/vocab/delete": {
+      "delete": {
+        "tags": ["v1", "vocab"],
+        "summary": "Delete Vocab",
+        "operationId": "delete_vocab_v1_vocab_delete_delete",
+        "parameters": [
+          {
+            "name": "vocab_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer", "title": "Vocab Id" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/VocabSchema" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/vocab/update": {
+      "post": {
+        "tags": ["v1", "vocab"],
+        "summary": "Update Vocab",
+        "operationId": "update_vocab_v1_vocab_update_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/VocabSchema" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/VocabSchema" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/vocab/page": {
+      "get": {
+        "tags": ["v1", "vocab"],
+        "summary": "Get Vocabs",
+        "operationId": "get_vocabs_v1_vocab_page_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 50, "title": "Limit" }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 0, "title": "Offset" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/VocabSchema" },
+                  "title": "Response Get Vocabs V1 Vocab Page Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/me": {
+      "get": {
+        "tags": ["v1", "user"],
+        "summary": "Get Current User",
+        "operationId": "get_current_user_v1_user_me_get",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/UserSchema" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/question/agent/chat/stream": {
+      "post": {
+        "tags": ["v1", "question"],
+        "summary": "Make Question By Chat Stream",
+        "description": "即时流式返回 Agent 进度与结果 (SSE)。",
+        "operationId": "make_question_by_chat_stream_v1_question_agent_chat_stream_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "type": "string", "title": "User Input" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "SSE stream; each 'data:' line is one JSON QuestionAgentEvent",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/QuestionAgentEvent" }
+              },
+              "text/event-stream": {
+                "schema": { "$ref": "#/components/schemas/QuestionAgentEvent" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/question/agent/chat": {
+      "post": {
+        "tags": ["v1", "question"],
+        "summary": "Make Question By Chat",
+        "operationId": "make_question_by_chat_v1_question_agent_chat_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "type": "string", "title": "User Input" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      { "$ref": "#/components/schemas/ChoiceQuestion" },
+                      { "$ref": "#/components/schemas/MatchQuestion" },
+                      { "$ref": "#/components/schemas/AssemblyQuestion" }
+                    ],
+                    "discriminator": {
+                      "propertyName": "question_type",
+                      "mapping": {
+                        "choice": "#/components/schemas/ChoiceQuestion",
+                        "match": "#/components/schemas/MatchQuestion",
+                        "assembly": "#/components/schemas/AssemblyQuestion"
+                      }
+                    }
+                  },
+                  "title": "Response Make Question By Chat V1 Question Agent Chat Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/question/judge": {
+      "post": {
+        "tags": ["v1", "question"],
+        "summary": "Judge Question",
+        "operationId": "judge_question_v1_question_judge_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  { "$ref": "#/components/schemas/ChoiceQuestion" },
+                  { "$ref": "#/components/schemas/MatchQuestion" },
+                  { "$ref": "#/components/schemas/AssemblyQuestion" }
+                ],
+                "title": "Question"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/JudgeResult" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health/health": {
+      "get": {
+        "summary": "Health Check",
+        "operationId": "health_check_health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AgentMessageData": {
+        "properties": {
+          "emoji": { "type": "string", "title": "Emoji" },
+          "message": { "type": "string", "title": "Message" }
+        },
+        "type": "object",
+        "required": ["emoji", "message"],
+        "title": "AgentMessageData"
+      },
+      "AgentMessageEvent": {
+        "properties": {
+          "type": { "type": "string", "const": "message", "title": "Type", "default": "message" },
+          "data": { "$ref": "#/components/schemas/AgentMessageData" }
+        },
+        "type": "object",
+        "required": ["data"],
+        "title": "AgentMessageEvent"
+      },
+      "AssemblyQuestion": {
+        "properties": {
+          "question_type": {
+            "type": "string",
+            "const": "assembly",
+            "title": "Question Type",
+            "description": "discriminator",
+            "default": "assembly"
+          },
+          "stem": { "type": "string", "title": "Stem" },
+          "options": { "items": { "type": "string" }, "type": "array", "title": "Options" },
+          "correct_answer": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Correct Answer"
+          },
+          "answer": {
+            "anyOf": [{ "items": { "type": "string" }, "type": "array" }, { "type": "null" }],
+            "title": "Answer"
+          }
+        },
+        "type": "object",
+        "required": ["stem", "options", "correct_answer"],
+        "title": "AssemblyQuestion",
+        "description": "Assembly question (fill in the blanks)."
+      },
+      "ChoiceQuestion": {
+        "properties": {
+          "question_type": {
+            "type": "string",
+            "const": "choice",
+            "title": "Question Type",
+            "description": "discriminator",
+            "default": "choice"
+          },
+          "stem": { "type": "string", "title": "Stem" },
+          "options": { "items": { "type": "string" }, "type": "array", "title": "Options" },
+          "correct_answer": { "type": "string", "title": "Correct Answer" },
+          "answer": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Answer" }
+        },
+        "type": "object",
+        "required": ["stem", "options", "correct_answer"],
+        "title": "ChoiceQuestion",
+        "description": "Multiple-choice question (single correct answer)."
+      },
+      "GrammarCreateSchema": {
+        "properties": {
+          "name": { "type": "string", "title": "Name", "description": "The name of the grammar." },
+          "usage": {
+            "type": "string",
+            "title": "Usage",
+            "description": "The usage of the grammar."
+          },
+          "status": {
+            "type": "number",
+            "title": "Status",
+            "description": "The status of the grammar."
+          },
+          "language": {
+            "type": "string",
+            "title": "Language",
+            "description": "The language of the grammar."
+          }
+        },
+        "type": "object",
+        "required": ["name", "usage", "status", "language"],
+        "title": "GrammarCreateSchema",
+        "description": "The Grammar create schema by Pydantic."
+      },
+      "GrammarSchema": {
+        "properties": {
+          "name": { "type": "string", "title": "Name", "description": "The name of the grammar." },
+          "usage": {
+            "type": "string",
+            "title": "Usage",
+            "description": "The usage of the grammar."
+          },
+          "status": {
+            "type": "number",
+            "title": "Status",
+            "description": "The status of the grammar."
+          },
+          "language": {
+            "type": "string",
+            "title": "Language",
+            "description": "The language of the grammar."
+          },
+          "id": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Id",
+            "description": "The ID of the grammar."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "The created time of the grammar."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At",
+            "description": "The updated time of the grammar."
+          }
+        },
+        "type": "object",
+        "required": ["name", "usage", "status", "language", "created_at", "updated_at"],
+        "title": "GrammarSchema",
+        "description": "The Grammar schema by Pydantic."
+      },
+      "GrammarUpdateSchema": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id", "description": "The ID of the grammar." },
+          "name": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Name",
+            "description": "The name of the grammar."
+          },
+          "usage": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Usage",
+            "description": "The usage of the grammar."
+          },
+          "status": {
+            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "title": "Status",
+            "description": "The status of the grammar."
+          }
+        },
+        "type": "object",
+        "required": ["id"],
+        "title": "GrammarUpdateSchema",
+        "description": "The Grammar update schema by Pydantic."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "JudgeResult": {
+        "properties": {
+          "correct": { "type": "boolean", "title": "Correct" },
+          "question": { "type": "string", "title": "Question" },
+          "answer": { "type": "string", "title": "Answer" },
+          "correct_answer": { "type": "string", "title": "Correct Answer" },
+          "error_reason": { "type": "string", "title": "Error Reason" }
+        },
+        "type": "object",
+        "required": ["correct", "question", "answer"],
+        "title": "JudgeResult",
+        "description": "Standardized evaluation output for a question answer."
+      },
+      "LoginSchema": {
+        "properties": {
+          "email": { "type": "string", "format": "email", "title": "Email" },
+          "password": { "type": "string", "title": "Password" }
+        },
+        "type": "object",
+        "required": ["email", "password"],
+        "title": "LoginSchema"
+      },
+      "MatchQuestion": {
+        "properties": {
+          "question_type": {
+            "type": "string",
+            "const": "match",
+            "title": "Question Type",
+            "description": "discriminator",
+            "default": "match"
+          },
+          "left_options": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Left Options"
+          },
+          "right_options": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Right Options"
+          },
+          "correct_answer": {
+            "items": {
+              "prefixItems": [{ "type": "string" }, { "type": "string" }],
+              "type": "array",
+              "maxItems": 2,
+              "minItems": 2
+            },
+            "type": "array",
+            "title": "Correct Answer"
+          },
+          "answer": {
+            "anyOf": [
+              {
+                "items": {
+                  "prefixItems": [{ "type": "string" }, { "type": "string" }],
+                  "type": "array",
+                  "maxItems": 2,
+                  "minItems": 2
+                },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Answer"
+          }
+        },
+        "type": "object",
+        "required": ["left_options", "right_options", "correct_answer"],
+        "title": "MatchQuestion",
+        "description": "Match question (match language to language, and match the correct answer)."
+      },
+      "MemoryCreateSchema": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "The content of the memory."
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "The category of the memory."
+          },
+          "priority": {
+            "type": "integer",
+            "title": "Priority",
+            "description": "The priority of the memory."
+          },
+          "language": {
+            "type": "string",
+            "title": "Language",
+            "description": "The language of the memory."
+          }
+        },
+        "type": "object",
+        "required": ["content", "category", "priority", "language"],
+        "title": "MemoryCreateSchema",
+        "description": "The Memory create schema by Pydantic."
+      },
+      "MemorySchema": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "The content of the memory."
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "The category of the memory."
+          },
+          "priority": {
+            "type": "integer",
+            "title": "Priority",
+            "description": "The priority of the memory."
+          },
+          "language": {
+            "type": "string",
+            "title": "Language",
+            "description": "The language of the memory."
+          },
+          "id": { "type": "integer", "title": "Id", "description": "The ID of the memory." },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "The created time of the memory."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At",
+            "description": "The updated time of the memory."
+          }
+        },
+        "type": "object",
+        "required": ["content", "category", "priority", "language", "created_at", "updated_at"],
+        "title": "MemorySchema",
+        "description": "The Memory schema by Pydantic."
+      },
+      "MemoryUpdateSchema": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id", "description": "The ID of the memory." },
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "The content of the memory."
+          },
+          "priority": {
+            "type": "integer",
+            "title": "Priority",
+            "description": "The priority of the memory."
+          }
+        },
+        "type": "object",
+        "required": ["id", "content", "priority"],
+        "title": "MemoryUpdateSchema"
+      },
+      "MistakeCreateSchema": {
+        "properties": {
+          "question": {
+            "type": "string",
+            "title": "Question",
+            "description": "The question of the mistake."
+          },
+          "question_type": {
+            "type": "string",
+            "title": "Question Type",
+            "description": "The type of the question."
+          },
+          "language": {
+            "type": "string",
+            "title": "Language",
+            "description": "The language type of the question."
+          },
+          "answer": {
+            "type": "string",
+            "title": "Answer",
+            "description": "The answer of the mistake."
+          },
+          "correct_answer": {
+            "type": "string",
+            "title": "Correct Answer",
+            "description": "The correct answer of the mistake."
+          },
+          "error_reason": {
+            "type": "string",
+            "title": "Error Reason",
+            "description": "The reason of the mistake."
+          }
+        },
+        "type": "object",
+        "required": [
+          "question",
+          "question_type",
+          "language",
+          "answer",
+          "correct_answer",
+          "error_reason"
+        ],
+        "title": "MistakeCreateSchema",
+        "description": "The Mistake create schema by Pydantic."
+      },
+      "MistakeSchema": {
+        "properties": {
+          "question": {
+            "type": "string",
+            "title": "Question",
+            "description": "The question of the mistake."
+          },
+          "question_type": {
+            "type": "string",
+            "title": "Question Type",
+            "description": "The type of the question."
+          },
+          "language": {
+            "type": "string",
+            "title": "Language",
+            "description": "The language type of the question."
+          },
+          "answer": {
+            "type": "string",
+            "title": "Answer",
+            "description": "The answer of the mistake."
+          },
+          "correct_answer": {
+            "type": "string",
+            "title": "Correct Answer",
+            "description": "The correct answer of the mistake."
+          },
+          "error_reason": {
+            "type": "string",
+            "title": "Error Reason",
+            "description": "The reason of the mistake."
+          },
+          "id": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Id",
+            "description": "The ID of the mistake."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "The created time of the mistake."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At",
+            "description": "The updated time of the mistake."
+          }
+        },
+        "type": "object",
+        "required": [
+          "question",
+          "question_type",
+          "language",
+          "answer",
+          "correct_answer",
+          "error_reason",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "MistakeSchema",
+        "description": "The Mistake schema by Pydantic."
+      },
+      "QuestionAgentEvent": {
+        "oneOf": [
+          { "$ref": "#/components/schemas/AgentMessageEvent" },
+          { "$ref": "#/components/schemas/QuestionAgentResult" }
+        ],
+        "title": "QuestionAgentEvent",
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "message": "#/components/schemas/AgentMessageEvent",
+            "result": "#/components/schemas/QuestionAgentResult"
+          }
+        }
+      },
+      "QuestionAgentResult": {
+        "properties": {
+          "type": { "type": "string", "const": "result", "title": "Type", "default": "result" },
+          "data": {
+            "items": {
+              "oneOf": [
+                { "$ref": "#/components/schemas/ChoiceQuestion" },
+                { "$ref": "#/components/schemas/MatchQuestion" },
+                { "$ref": "#/components/schemas/AssemblyQuestion" }
+              ],
+              "discriminator": {
+                "propertyName": "question_type",
+                "mapping": {
+                  "assembly": "#/components/schemas/AssemblyQuestion",
+                  "choice": "#/components/schemas/ChoiceQuestion",
+                  "match": "#/components/schemas/MatchQuestion"
+                }
+              }
+            },
+            "type": "array",
+            "title": "Data"
+          }
+        },
+        "type": "object",
+        "required": ["data"],
+        "title": "QuestionAgentResult"
+      },
+      "RefreshResponseSchema": {
+        "properties": { "access_token": { "type": "string", "title": "Access Token" } },
+        "type": "object",
+        "required": ["access_token"],
+        "title": "RefreshResponseSchema"
+      },
+      "RefreshSchema": {
+        "properties": { "refresh_token": { "type": "string", "title": "Refresh Token" } },
+        "type": "object",
+        "required": ["refresh_token"],
+        "title": "RefreshSchema"
+      },
+      "RegisterResponseSchema": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id" },
+          "email": { "type": "string", "title": "Email" },
+          "access_token": { "type": "string", "title": "Access Token" },
+          "refresh_token": { "type": "string", "title": "Refresh Token" }
+        },
+        "type": "object",
+        "required": ["id", "email", "access_token", "refresh_token"],
+        "title": "RegisterResponseSchema"
+      },
+      "RegisterSchema": {
+        "properties": {
+          "name": { "type": "string", "title": "Name" },
+          "email": { "type": "string", "format": "email", "title": "Email" },
+          "password": { "type": "string", "title": "Password" }
+        },
+        "type": "object",
+        "required": ["name", "email", "password"],
+        "title": "RegisterSchema"
+      },
+      "StoryCreateSchema": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "The content of the story."
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary",
+            "description": "The summary of the story."
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "The category of the story."
+          },
+          "language": {
+            "type": "string",
+            "title": "Language",
+            "description": "The language of the story."
+          }
+        },
+        "type": "object",
+        "required": ["content", "summary", "category", "language"],
+        "title": "StoryCreateSchema",
+        "description": "The Story create schema by Pydantic."
+      },
+      "StorySchema": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "The content of the story."
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary",
+            "description": "The summary of the story."
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "The category of the story."
+          },
+          "language": {
+            "type": "string",
+            "title": "Language",
+            "description": "The language of the story."
+          },
+          "id": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Id",
+            "description": "The ID of the story."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "The created time of the story."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At",
+            "description": "The updated time of the story."
+          }
+        },
+        "type": "object",
+        "required": ["content", "summary", "category", "language", "created_at", "updated_at"],
+        "title": "StorySchema",
+        "description": "The Story schema by Pydantic."
+      },
+      "TokenSchema": {
+        "properties": {
+          "access_token": { "type": "string", "title": "Access Token" },
+          "refresh_token": { "type": "string", "title": "Refresh Token" }
+        },
+        "type": "object",
+        "required": ["access_token", "refresh_token"],
+        "title": "TokenSchema"
+      },
+      "UserSchema": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id", "description": "The ID of the user." },
+          "name": { "type": "string", "title": "Name", "description": "The name of the user." },
+          "email": { "type": "string", "title": "Email", "description": "The email of the user." },
+          "token_quota": {
+            "type": "integer",
+            "title": "Token Quota",
+            "description": "The token quota of the user."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "The created time of the user."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At",
+            "description": "The updated time of the user."
+          }
+        },
+        "type": "object",
+        "required": ["name", "email", "token_quota", "created_at", "updated_at"],
+        "title": "UserSchema",
+        "description": "The User schema by Pydantic.\n\nユーザースキーマ。"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      },
+      "VocabCreateSchema": {
+        "properties": {
+          "name": { "type": "string", "title": "Name", "description": "The name of the vocab." },
+          "usage": { "type": "string", "title": "Usage", "description": "The usage of the vocab." },
+          "status": {
+            "type": "number",
+            "title": "Status",
+            "description": "The status of the vocab."
+          },
+          "language": {
+            "type": "string",
+            "title": "Language",
+            "description": "The language of the vocab."
+          }
+        },
+        "type": "object",
+        "required": ["name", "usage", "status", "language"],
+        "title": "VocabCreateSchema",
+        "description": "The Vocab create schema by Pydantic."
+      },
+      "VocabSchema": {
+        "properties": {
+          "name": { "type": "string", "title": "Name", "description": "The name of the vocab." },
+          "usage": { "type": "string", "title": "Usage", "description": "The usage of the vocab." },
+          "status": {
+            "type": "number",
+            "title": "Status",
+            "description": "The status of the vocab."
+          },
+          "language": {
+            "type": "string",
+            "title": "Language",
+            "description": "The language of the vocab."
+          },
+          "id": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Id",
+            "description": "The ID of the vocab."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "The created time of the vocab."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At",
+            "description": "The updated time of the vocab."
+          }
+        },
+        "type": "object",
+        "required": ["name", "usage", "status", "language", "created_at", "updated_at"],
+        "title": "VocabSchema",
+        "description": "The Vocab schema by Pydantic."
+      }
+    }
+  }
+}
