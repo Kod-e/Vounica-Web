@@ -9,5 +9,9 @@
   "languageName": "日本語",
   "profile": "個人情報",
   "email": "メールアドレス",
-  "signOut": "ログアウト"
+  "signOut": "ログアウト",
+  "question": "問題",
+  "error_reason": "誤りの理由",
+  "answer": "答え",
+  "updated_at": "更新日時"
 }

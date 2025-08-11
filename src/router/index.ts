@@ -22,6 +22,16 @@ const router = createRouter({
       name: 'user',
       component: () => import('../views/UserView.vue'),
     },
+    {
+      path: '/vocab',
+      name: 'vocab',
+      component: () => import('../views/VocabView.vue'),
+    },
+    {
+      path: '/grammar',
+      name: 'grammar',
+      component: () => import('../views/GrammarView.vue'),
+    },
   ],
 })
 

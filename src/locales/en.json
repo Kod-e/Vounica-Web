@@ -9,5 +9,9 @@
   "languageName": "English",
   "profile": "Profile",
   "email": "Email",
-  "signOut": "Sign Out"
+  "signOut": "Sign Out",
+  "question": "Question",
+  "error_reason": "Error Reason",
+  "answer": "Answer",
+  "updated_at": "Updated At"
 }

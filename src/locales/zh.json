@@ -9,5 +9,9 @@
   "languageName": "中文",
   "profile": "个人资料",
   "signOut": "登出",
-  "email": "邮箱"
+  "email": "邮箱",
+  "question": "问题",
+  "error_reason": "错误原因",
+  "answer": "答案",
+  "updated_at": "更新时间"
 }
