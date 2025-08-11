@@ -234,8 +234,8 @@
               <UserIcon class="size-10 text-gray-300" aria-hidden="true" />
             </div>
             <div class="ml-3">
-              <div class="text-base/5 font-medium text-white">{{ user.name }}</div>
-              <div class="text-sm font-medium text-gray-400">{{ user.email }}</div>
+              <div class="text-base/5 font-medium text-white">{{ username }}</div>
+              <div class="text-sm font-medium text-gray-400">{{ email }}</div>
             </div>
           </div>
           <div class="mt-3 space-y-1 px-2">
@@ -272,17 +272,21 @@ import {
 } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { ChevronDownIcon } from '@heroicons/vue/20/solid'
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useLangStore } from '@/stores/lang'
 import { i18n } from '@/plugins/i18n'
 import { useI18n } from 'vue-i18n'
+import { useUserStore } from '@/stores/user'
+import { fetchUser } from '@/service/user'
+const userStore = useUserStore()
 
 const { t } = useI18n()
 
-const user = {
-  name: 'name not set',
-  email: 'email@notset.ac.jp',
-}
+onMounted(async () => {
+  await fetchUser()
+})
+const username = computed(() => userStore.name)
+const email = computed(() => userStore.email)
 const navigation = computed(() => [
   { name: t('home'), href: '#', current: true },
   { name: t('mistake'), href: '#', current: false },
@@ -313,7 +317,7 @@ function selectTargetLang(code: string) {
 }
 
 const userNavigation = computed(() => [
-  { name: t('profile'), href: '#' },
+  { name: t('profile'), href: '/user' },
   { name: t('signOut'), href: '#' },
 ])
 </script>
