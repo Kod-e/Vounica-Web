@@ -9,8 +9,7 @@ export const api = createClient<paths>({ baseUrl: apiBase })
 
 export type AuthHandlers = {
   getToken: () => Promise<string | ''> // 需要时拿到 access token（可触发游客登录）
-  tryRefresh: () => Promise<void> // 401 时尝试刷新；失败应清理会话
-  onAuthLost?: (redirectTo?: string) => void // 刷新失败或仍 401：由外部决定跳登录或弹窗
+  onAuthLost: () => Promise<void> // 刷新失败, 得到明确的401 code, 这个时候重新获取新的游客
 }
 
 let handlers: AuthHandlers | null = null
@@ -27,6 +26,18 @@ api.use({
     headers.set('Authorization', `Bearer ${token}`)
     return new Request(request, { headers })
   },
+  async onResponse({ response }) {
+    // 在200/201时直接return
+    if (response.status === 200 || response.status === 201) return response
 
-  // 晚点再写onError
+    // 晚点写一下推送message的逻辑
+
+    // 401时, 视为当前会话无效, 切换到游客
+    if (response.status === 401) {
+      await handlers!.onAuthLost()
+      return response
+    }
+
+    throw response
+  },
 })

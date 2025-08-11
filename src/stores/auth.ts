@@ -4,7 +4,8 @@ import { defineStore } from 'pinia'
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     accessToken: '' as string,
-    refreshToken: '' as string | null,
+    refreshToken: '' as string,
+    updatedAt: 0 as number,
   }),
 
   getters: {
@@ -13,19 +14,23 @@ export const useAuthStore = defineStore('auth', {
   },
 
   actions: {
-    setTokens(accessToken: string, refreshToken?: string | null) {
+    setTokens(accessToken: string, refreshToken: string) {
       this.accessToken = accessToken
-      this.refreshToken = refreshToken ?? null
+      this.refreshToken = refreshToken
+      this.updatedAt = Date.now()
     },
     setAccessToken(token: string) {
       this.accessToken = token
+      this.updatedAt = Date.now()
     },
-    setRefreshToken(token: string | null) {
+    setRefreshToken(token: string) {
       this.refreshToken = token
+      this.updatedAt = Date.now()
     },
     clear() {
       this.accessToken = ''
-      this.refreshToken = null
+      this.refreshToken = ''
+      this.updatedAt = 0
     },
   },
 
