@@ -18,5 +18,8 @@
   "vocabViewDescription": "Your vocabularies list.",
   "grammarViewDescription": "Your grammars list.",
   "usage": "Usage",
-  "name": "Name"
+  "name": "Name",
+  "noCategory": "No category",
+  "selectCategory": "Select Category",
+  "memoryViewDescription": "Your memory list."
 }
