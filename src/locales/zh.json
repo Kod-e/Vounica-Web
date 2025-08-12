@@ -21,5 +21,10 @@
   "name": "名称",
   "noCategory": "没有分类",
   "selectCategory": "选择分类",
-  "memoryViewDescription": "记忆的列表。"
+  "memoryViewDescription": "记忆的列表。",
+  "prevPage": "上一页",
+  "nextPage": "下一页",
+  "summary": "摘要",
+  "storyViewDescription": "故事的列表。",
+  "addStory": "添加故事"
 }

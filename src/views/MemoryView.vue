@@ -99,7 +99,7 @@ const memoryStore = memoryController()
 const tabs = computed(() => memoryStore.categories.map((category) => ({ name: category })))
 
 onMounted(() => {
-  memoryStore.fetchCategories()
+  // memoryStore.fetchCategories()
   memoryStore.setFakeCategories()
   memoryStore.setFakeMemories()
 })

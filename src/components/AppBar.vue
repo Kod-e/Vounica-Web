@@ -292,7 +292,7 @@ const navigation = computed(() => [
   { name: t('mistake'), href: '/mistake', current: false },
   { name: t('vocab'), href: '/vocab', current: false },
   { name: t('grammar'), href: '/grammar', current: false },
-  { name: t('story'), href: '#', current: false },
+  { name: t('story'), href: '/story', current: false },
   { name: t('memory'), href: '/memory', current: false },
 ])
 const langStore = useLangStore()

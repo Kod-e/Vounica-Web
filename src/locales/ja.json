@@ -21,5 +21,10 @@
   "name": "名前",
   "noCategory": "カテゴリがありません",
   "selectCategory": "カテゴリを選択",
-  "memoryViewDescription": "記憶のリストです。"
+  "memoryViewDescription": "記憶のリストです。",
+  "prevPage": "前のページ",
+  "nextPage": "次のページ",
+  "summary": "要約",
+  "storyViewDescription": "物語のリストです。",
+  "addStory": "物語を追加"
 }

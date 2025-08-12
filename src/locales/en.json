@@ -21,5 +21,10 @@
   "name": "Name",
   "noCategory": "No category",
   "selectCategory": "Select Category",
-  "memoryViewDescription": "Your memory list."
+  "memoryViewDescription": "Your memory list.",
+  "prevPage": "Prev Page",
+  "nextPage": "Next Page",
+  "summary": "Summary",
+  "storyViewDescription": "Your story list.",
+  "addStory": "Add Story"
 }
