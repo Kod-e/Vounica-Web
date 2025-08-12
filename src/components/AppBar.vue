@@ -6,19 +6,26 @@
           <div class="flex items-center">
             <div class="hidden md:block">
               <div class="ml-10 flex items-baseline space-x-4">
-                <a
+                <RouterLink
                   v-for="item in navigation"
                   :key="item.name"
-                  :href="item.href"
-                  :class="[
-                    item.current
-                      ? 'bg-gray-900 text-white'
-                      : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'rounded-md px-3 py-2 text-sm font-medium',
-                  ]"
-                  :aria-current="item.current ? 'page' : undefined"
-                  >{{ item.name }}</a
+                  :to="item.href"
+                  custom
+                  v-slot="{ isActive, href, navigate }"
                 >
+                  <a
+                    :href="href"
+                    @click="navigate"
+                    :class="[
+                      isActive
+                        ? 'bg-gray-900 text-white'
+                        : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                      'rounded-md px-3 py-2 text-sm font-medium',
+                    ]"
+                    :aria-current="isActive ? 'page' : undefined"
+                    >{{ item.name }}</a
+                  >
+                </RouterLink>
               </div>
             </div>
           </div>
@@ -213,20 +220,26 @@
 
       <DisclosurePanel class="md:hidden">
         <div class="space-y-1 px-2 pt-2 pb-3 sm:px-3">
-          <DisclosureButton
+          <RouterLink
             v-for="item in navigation"
             :key="item.name"
-            as="a"
-            :href="item.href"
-            :class="[
-              item.current
-                ? 'bg-gray-900 text-white'
-                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-              'block rounded-md px-3 py-2 text-base font-medium',
-            ]"
-            :aria-current="item.current ? 'page' : undefined"
-            >{{ item.name }}</DisclosureButton
+            :to="item.href"
+            custom
+            v-slot="{ isActive, href, navigate }"
           >
+            <a
+              :href="href"
+              @click="navigate"
+              :class="[
+                isActive
+                  ? 'bg-gray-900 text-white'
+                  : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                'block rounded-md px-3 py-2 text-base font-medium',
+              ]"
+              :aria-current="isActive ? 'page' : undefined"
+              >{{ item.name }}</a
+            >
+          </RouterLink>
         </div>
         <div class="border-t border-gray-700 pt-4 pb-3">
           <div class="flex items-center space-x-2 px-5">
@@ -288,12 +301,12 @@ onMounted(async () => {
 const username = computed(() => userStore.name)
 const email = computed(() => userStore.email)
 const navigation = computed(() => [
-  { name: t('home'), href: '/', current: true },
-  { name: t('mistake'), href: '/mistake', current: false },
-  { name: t('vocab'), href: '/vocab', current: false },
-  { name: t('grammar'), href: '/grammar', current: false },
-  { name: t('story'), href: '/story', current: false },
-  { name: t('memory'), href: '/memory', current: false },
+  { name: t('home'), href: '/' },
+  { name: t('mistake'), href: '/mistake' },
+  { name: t('vocab'), href: '/vocab' },
+  { name: t('grammar'), href: '/grammar' },
+  { name: t('story'), href: '/story' },
+  { name: t('memory'), href: '/memory' },
 ])
 const langStore = useLangStore()
 
