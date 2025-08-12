@@ -25,6 +25,38 @@ export const memoryController = defineStore('memory', {
     async setFakeCategories() {
       this.categories = ['test1', 'test2', 'test3']
     },
+    setFakeMemories() {
+      this.memories = [
+        {
+          id: 1,
+          content:
+            'test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1',
+          language: 'test1',
+          category: 'test1',
+          priority: 1,
+          created_at: '2021-01-01',
+          updated_at: '2021-01-01',
+        },
+        {
+          id: 2,
+          content: 'test2',
+          language: 'test2',
+          category: 'test2',
+          priority: 2,
+          created_at: '2021-01-02',
+          updated_at: '2021-01-02',
+        },
+        {
+          id: 3,
+          content: 'test3',
+          language: 'test3',
+          category: 'test3',
+          priority: 3,
+          created_at: '2021-01-03',
+          updated_at: '2021-01-03',
+        },
+      ]
+    },
     async fetchMemoriesByCategory() {
       if (!this.selectedCategory) return
       this.isLoading = true

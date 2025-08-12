@@ -53,33 +53,20 @@
         v-if="memoryStore.selectedCategory"
         class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"
       >
-        <div class="inline-block min-w-full py-2 align-middle">
-          <table class="min-w-full divide-y divide-gray-300">
-            <thead>
-              <tr>
-                <th
-                  scope="col"
-                  class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8"
-                >
-                  {{ t('question') }}
-                </th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                  {{ t('error_reason') }}
-                </th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                  {{ t('answer') }}
-                </th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200 bg-white" v-if="memoryStore.isLoading">
-              <tr v-for="memory in memories" :key="memory.id!">
-                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">
-                  {{ memory.content }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <ul role="list" class="divide-y divide-gray-100">
+          <li v-for="memory in memories" :key="memory.id" class="py-5">
+            <div class="min-w-0">
+              <p class="text-sm/6 text-gray-900 break-all">{{ memory.content }}</p>
+            </div>
+            <div class="mt-2 flex items-center justify-between">
+              <p class="text-xs/5 text-gray-500">{{ t('priority') }}: {{ memory.priority }}</p>
+              <p class="text-xs/5 text-gray-500">
+                {{ t('updated_at') }}
+                <time :datetime="memory.updated_at">{{ memory.updated_at }}</time>
+              </p>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
     <div class="mt-8 flex justify-between">
@@ -113,7 +100,8 @@ const tabs = computed(() => memoryStore.categories.map((category) => ({ name: ca
 
 onMounted(() => {
   memoryStore.fetchCategories()
-  // memoryStore.setFakeCategories()
+  memoryStore.setFakeCategories()
+  memoryStore.setFakeMemories()
 })
 
 const memories = computed(() => memoryStore.memories)
