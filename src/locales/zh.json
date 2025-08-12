@@ -13,5 +13,10 @@
   "question": "问题",
   "error_reason": "错误原因",
   "answer": "答案",
-  "updated_at": "更新时间"
+  "updated_at": "更新时间",
+  "mistakeViewDescription": "错题的列表。",
+  "vocabViewDescription": "词汇的列表。",
+  "grammarViewDescription": "语法的列表。",
+  "usage": "使用",
+  "name": "名称"
 }

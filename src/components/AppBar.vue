@@ -289,7 +289,7 @@ const username = computed(() => userStore.name)
 const email = computed(() => userStore.email)
 const navigation = computed(() => [
   { name: t('home'), href: '/', current: true },
-  { name: t('mistake'), href: '#', current: false },
+  { name: t('mistake'), href: '/mistake', current: false },
   { name: t('vocab'), href: '/vocab', current: false },
   { name: t('grammar'), href: '/grammar', current: false },
   { name: t('story'), href: '#', current: false },

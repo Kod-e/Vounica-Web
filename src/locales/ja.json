@@ -13,5 +13,10 @@
   "question": "問題",
   "error_reason": "誤りの理由",
   "answer": "答え",
-  "updated_at": "更新日時"
+  "updated_at": "更新日時",
+  "mistakeViewDescription": "間違いのリストです。",
+  "vocabViewDescription": "単語のリストです。",
+  "grammarViewDescription": "文法のリストです。",
+  "usage": "使用",
+  "name": "名前"
 }

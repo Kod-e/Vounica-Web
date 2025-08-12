@@ -13,5 +13,10 @@
   "question": "Question",
   "error_reason": "Error Reason",
   "answer": "Answer",
-  "updated_at": "Updated At"
+  "updated_at": "Updated At",
+  "mistakeViewDescription": "Your mistakes list.",
+  "vocabViewDescription": "Your vocabularies list.",
+  "grammarViewDescription": "Your grammars list.",
+  "usage": "Usage",
+  "name": "Name"
 }

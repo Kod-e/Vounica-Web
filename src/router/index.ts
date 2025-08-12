@@ -32,6 +32,11 @@ const router = createRouter({
       name: 'grammar',
       component: () => import('../views/GrammarView.vue'),
     },
+    {
+      path: '/mistake',
+      name: 'mistake',
+      component: () => import('../views/MistakeView.vue'),
+    },
   ],
 })
 
