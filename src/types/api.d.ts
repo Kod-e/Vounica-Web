@@ -663,6 +663,58 @@ export interface components {
             type: "message";
             data: components["schemas"]["AgentMessageData"];
         };
+        /** AgentStreamChunkData */
+        AgentStreamChunkData: {
+            /** Chunk */
+            chunk: string;
+        };
+        /** AgentStreamChunkEvent */
+        AgentStreamChunkEvent: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "stream_chunk";
+            data?: components["schemas"]["AgentStreamChunkData"];
+        };
+        /** AgentStreamEndData */
+        AgentStreamEndData: Record<string, never>;
+        /** AgentStreamEndEvent */
+        AgentStreamEndEvent: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "stream_end";
+            data?: components["schemas"]["AgentStreamEndData"];
+        };
+        /** AgentThinkingData */
+        AgentThinkingData: Record<string, never>;
+        /** AgentThinkingEvent */
+        AgentThinkingEvent: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "thinking";
+            data?: components["schemas"]["AgentThinkingData"];
+        };
+        /** AgentToolCallEvent */
+        AgentToolCallEvent: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "tool_call";
+            data?: components["schemas"]["AgentToolData"];
+        };
+        /** AgentToolData */
+        AgentToolData: {
+            /** Tool Name */
+            tool_name: string;
+            /** Tool Input */
+            tool_input: string;
+        };
         /**
          * AssemblyQuestion
          * @description Assembly question (fill in the blanks).
@@ -1029,7 +1081,7 @@ export interface components {
             updated_at: string;
         };
         /** QuestionAgentEvent */
-        QuestionAgentEvent: components["schemas"]["AgentMessageEvent"] | components["schemas"]["QuestionAgentResult"];
+        QuestionAgentEvent: components["schemas"]["AgentMessageEvent"] | components["schemas"]["QuestionAgentResult"] | components["schemas"]["AgentThinkingEvent"] | components["schemas"]["AgentStreamChunkEvent"] | components["schemas"]["AgentStreamEndEvent"] | components["schemas"]["AgentToolCallEvent"];
         /** QuestionAgentResult */
         QuestionAgentResult: {
             /**

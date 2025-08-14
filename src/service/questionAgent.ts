@@ -1,41 +1,20 @@
 // 看起来目前实现了其他的端口, 但是我希望接受来自QuestionAgent的SSE Stream, 并且解码每一个Event, 按照需求放进pinia, 并且通过pinia的特性显示在页面上
 import { apiBase } from '@/lib/apiBase'
 import { buildAuthHeaders, getAuthHandlers } from '@/lib/api'
+import type { components } from '@/types/api'
 
-export type AgentMessageEvent = {
-  type: 'message'
-  data: { emoji: string; message: string }
-}
+export type AgentMessageEvent = components['schemas']['AgentMessageEvent']
+export type AgentThinkingEvent = components['schemas']['AgentThinkingEvent']
+export type AgentStreamChunkEvent = components['schemas']['AgentStreamChunkEvent']
+export type AgentStreamEndEvent = components['schemas']['AgentStreamEndEvent']
+export type AgentToolCallEvent = components['schemas']['AgentToolCallEvent']
+export type QuestionAgentResult = components['schemas']['QuestionAgentResult']
+export type QuestionAgentEvent = components['schemas']['QuestionAgentEvent']
 
-export type ChoiceQuestion = {
-  question_type: 'choice'
-  stem: string
-  options: string[]
-  correct_answer: string
-  answer: string | null
-}
-export type MatchQuestion = {
-  question_type: 'match'
-  left_options: string[]
-  right_options: string[]
-  correct_answer: [string, string][]
-  answer: [string, string][] | null
-}
-export type AssemblyQuestion = {
-  question_type: 'assembly'
-  stem: string
-  options: string[]
-  correct_answer: string[]
-  answer: string[] | null
-}
+export type ChoiceQuestion = components['schemas']['ChoiceQuestion']
+export type MatchQuestion = components['schemas']['MatchQuestion']
+export type AssemblyQuestion = components['schemas']['AssemblyQuestion']
 export type Question = ChoiceQuestion | MatchQuestion | AssemblyQuestion
-
-export type QuestionAgentResult = {
-  type: 'result'
-  data: Question[]
-}
-
-export type QuestionAgentEvent = AgentMessageEvent | QuestionAgentResult
 
 export type StreamController = {
   cancel: () => void
@@ -69,7 +48,6 @@ export async function runQuestionAgentStream(
     throw new Error(`Request failed: ${resp.status}`)
   }
 
-  // 断言 body 存在
   const stream = resp.body
   if (!stream) throw new Error('No response body')
 
@@ -83,7 +61,6 @@ export async function runQuestionAgentStream(
         const { done, value } = await reader.read()
         if (done) break
         buffer += decoder.decode(value, { stream: true })
-        // 解析完整帧
         const splitIndex = buffer.lastIndexOf('\n\n')
         if (splitIndex !== -1) {
           const blocks = buffer.slice(0, splitIndex + 2)
@@ -97,13 +74,10 @@ export async function runQuestionAgentStream(
             try {
               const ev = JSON.parse(json) as QuestionAgentEvent
               onEvent(ev)
-            } catch {
-              // ignore single-frame parse error
-            }
+            } catch {}
           }
         }
       }
-      // 处理尾块（无\n\n结尾）
       const tail = buffer.trim()
       if (tail.startsWith('data:')) {
         const json = tail.slice(5).trimStart()
@@ -113,7 +87,6 @@ export async function runQuestionAgentStream(
         } catch {}
       }
     } catch (err) {
-      // 只有在主动取消时不抛出
       if (!(err instanceof DOMException && err.name === 'AbortError')) {
         throw err
       }

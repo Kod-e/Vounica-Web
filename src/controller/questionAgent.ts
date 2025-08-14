@@ -1,25 +1,60 @@
 import { defineStore } from 'pinia'
-import type { Question, QuestionAgentEvent, StreamController } from '@/service/questionAgent'
+import type {
+  QuestionAgentEvent,
+  AgentMessageEvent,
+  AgentStreamChunkEvent,
+  AgentStreamEndEvent,
+} from '@/service/questionAgent'
 import { runQuestionAgentStream } from '@/service/questionAgent'
+
+function isStreamChunkEvent(ev: QuestionAgentEvent): ev is AgentStreamChunkEvent {
+  return ev.type === 'stream_chunk'
+}
+function isStreamEndEvent(ev: QuestionAgentEvent): ev is AgentStreamEndEvent {
+  return ev.type === 'stream_end'
+}
 
 export const questionAgentController = defineStore('questionAgent', {
   state: () => ({
-    messages: [] as { emoji: string; message: string }[],
-    questions: [] as Question[],
+    events: [] as QuestionAgentEvent[],
     running: false,
-    _stream: null as StreamController | null,
+    isStreaming: false,
+    streamText: '' as string,
+    _stream: null as null | { cancel: () => void },
   }),
   actions: {
     async start(userInput: string) {
       if (this.running) this.stop()
-      this.messages = []
-      this.questions = []
+      this.events = []
+      this.streamText = ''
+      this.isStreaming = false
       this.running = true
       this._stream = await runQuestionAgentStream(userInput, (ev: QuestionAgentEvent) => {
-        if (ev.type === 'message') {
-          this.messages.push(ev.data)
-        } else if (ev.type === 'result') {
-          this.questions = ev.data
+        // 记录每个事件
+        this.events.push(ev)
+
+        if (isStreamChunkEvent(ev)) {
+          if (!this.isStreaming) {
+            this.isStreaming = true
+            this.streamText = ''
+          }
+          const chunk = ev.data?.chunk ?? ''
+          if (chunk) this.streamText += chunk
+          return
+        }
+
+        if (isStreamEndEvent(ev)) {
+          const text = this.streamText.trim()
+          if (text.length > 0) {
+            const messageEvent: AgentMessageEvent = {
+              type: 'message',
+              data: { emoji: '💬', message: text },
+            }
+            this.events.unshift(messageEvent)
+          }
+          this.isStreaming = false
+          this.streamText = ''
+          return
         }
       })
     },
@@ -29,6 +64,8 @@ export const questionAgentController = defineStore('questionAgent', {
         this._stream = null
       }
       this.running = false
+      this.isStreaming = false
+      this.streamText = ''
     },
   },
 })

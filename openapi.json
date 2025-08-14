@@ -2065,6 +2065,70 @@
         "required": ["data"],
         "title": "AgentMessageEvent"
       },
+      "AgentStreamChunkData": {
+        "properties": { "chunk": { "type": "string", "title": "Chunk" } },
+        "type": "object",
+        "required": ["chunk"],
+        "title": "AgentStreamChunkData"
+      },
+      "AgentStreamChunkEvent": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "stream_chunk",
+            "title": "Type",
+            "default": "stream_chunk"
+          },
+          "data": { "$ref": "#/components/schemas/AgentStreamChunkData" }
+        },
+        "type": "object",
+        "title": "AgentStreamChunkEvent"
+      },
+      "AgentStreamEndData": { "properties": {}, "type": "object", "title": "AgentStreamEndData" },
+      "AgentStreamEndEvent": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "stream_end",
+            "title": "Type",
+            "default": "stream_end"
+          },
+          "data": { "$ref": "#/components/schemas/AgentStreamEndData" }
+        },
+        "type": "object",
+        "title": "AgentStreamEndEvent"
+      },
+      "AgentThinkingData": { "properties": {}, "type": "object", "title": "AgentThinkingData" },
+      "AgentThinkingEvent": {
+        "properties": {
+          "type": { "type": "string", "const": "thinking", "title": "Type", "default": "thinking" },
+          "data": { "$ref": "#/components/schemas/AgentThinkingData" }
+        },
+        "type": "object",
+        "title": "AgentThinkingEvent"
+      },
+      "AgentToolCallEvent": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "tool_call",
+            "title": "Type",
+            "default": "tool_call"
+          },
+          "data": { "$ref": "#/components/schemas/AgentToolData" }
+        },
+        "type": "object",
+        "title": "AgentToolCallEvent"
+      },
+      "AgentToolData": {
+        "properties": {
+          "tool_name": { "type": "string", "title": "Tool Name" },
+          "tool_input": { "type": "string", "title": "Tool Input" }
+        },
+        "type": "object",
+        "required": ["tool_name", "tool_input"],
+        "title": "AgentToolData"
+      },
       "AssemblyQuestion": {
         "properties": {
           "question_type": {
@@ -2481,14 +2545,22 @@
       "QuestionAgentEvent": {
         "oneOf": [
           { "$ref": "#/components/schemas/AgentMessageEvent" },
-          { "$ref": "#/components/schemas/QuestionAgentResult" }
+          { "$ref": "#/components/schemas/QuestionAgentResult" },
+          { "$ref": "#/components/schemas/AgentThinkingEvent" },
+          { "$ref": "#/components/schemas/AgentStreamChunkEvent" },
+          { "$ref": "#/components/schemas/AgentStreamEndEvent" },
+          { "$ref": "#/components/schemas/AgentToolCallEvent" }
         ],
         "title": "QuestionAgentEvent",
         "discriminator": {
           "propertyName": "type",
           "mapping": {
             "message": "#/components/schemas/AgentMessageEvent",
-            "result": "#/components/schemas/QuestionAgentResult"
+            "result": "#/components/schemas/QuestionAgentResult",
+            "stream_chunk": "#/components/schemas/AgentStreamChunkEvent",
+            "stream_end": "#/components/schemas/AgentStreamEndEvent",
+            "thinking": "#/components/schemas/AgentThinkingEvent",
+            "tool_call": "#/components/schemas/AgentToolCallEvent"
           }
         }
       },
