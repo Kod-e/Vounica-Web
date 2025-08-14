@@ -26,5 +26,10 @@
   "nextPage": "下一页",
   "summary": "摘要",
   "storyViewDescription": "故事的列表。",
-  "addStory": "添加故事"
+  "addStory": "添加故事",
+  "thinking": "思考中...",
+  "addQuestion": "添加问题",
+  "searchResource": "正在查找你的个人资料",
+  "success": "成功",
+  "questionAgentCommand": "输入你想学习的知识"
 }

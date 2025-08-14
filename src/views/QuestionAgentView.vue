@@ -1,9 +1,20 @@
 <template>
-  <h1>QuestionView</h1>
-  <input v-model="userInput" />
-  <button @click="questionAgent.start(userInput)">Start</button>
-  <button @click="questionAgent.stop()" :disabled="!questionAgent.running">Stop</button>
-  <div class="flow-root">
+  <div v-if="!questionAgent.running">
+    <label for="questionAgentCommand" class="block text-sm font-medium leading-6 text-gray-900">{{
+      t('questionAgentCommand')
+    }}</label>
+    <div class="relative mt-2 flex items-center">
+      <input
+        type="text"
+        name="questionAgentCommand"
+        id="questionAgent"
+        v-model="userInput"
+        @keydown.enter.prevent="questionAgent.start(userInput)"
+        class="block w-full rounded-md border-0 px-2 py-1.5 pr-14 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+      />
+    </div>
+  </div>
+  <div v-else class="flow-root">
     <ul role="list" class="-mb-8">
       <div v-for="(event, i) in questionAgent.events" :key="i">
         <div class="relative pb-8">
@@ -34,12 +45,21 @@
                 </p>
               </div>
               <div v-else-if="event.type === 'thinking'">
-                <p class="text-md font-bold text-gray-800">thinking...</p>
+                <p class="text-md font-bold text-gray-800">{{ t('thinking') }}</p>
               </div>
               <div v-else-if="event.type === 'tool_call'">
-                <p class="text-sm text-gray-500">
-                  🔧 {{ event.data?.tool_name }}: {{ event.data?.tool_input }}
+                <div v-if="/^add_.*_question$/.test(event.data?.tool_name ?? '')">
+                  {{ t('addQuestion') }}
+                </div>
+                <div v-else-if="event.data?.tool_name === 'search_resource'">
+                  {{ t('searchResource') }}
+                </div>
+                <p v-else class="text-sm text-gray-500">
+                  {{ event.data?.tool_name }}: {{ event.data?.tool_input }}
                 </p>
+              </div>
+              <div v-else-if="event.type === 'result'">
+                {{ t('success') }}
               </div>
             </div>
           </div>
@@ -74,6 +94,9 @@
 <script setup lang="ts">
 import { questionAgentController } from '@/controller/questionAgent'
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const questionAgent = questionAgentController()
 const userInput = ref('')
@@ -83,6 +106,7 @@ import {
   LightBulbIcon,
   CircleStackIcon,
   ChatBubbleLeftEllipsisIcon,
+  CheckIcon,
 } from '@heroicons/vue/20/solid'
 
 const getBackground = (type: string) => {
@@ -96,6 +120,7 @@ const getIcon = (type: string) => {
   if (type === 'message') return ChatBubbleLeftEllipsisIcon
   if (type === 'thinking') return LightBulbIcon
   if (type === 'tool_call') return WrenchIcon
+  if (type === 'result') return CheckIcon
   return CircleStackIcon
 }
 </script>

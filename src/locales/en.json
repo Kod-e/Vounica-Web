@@ -26,5 +26,10 @@
   "nextPage": "Next Page",
   "summary": "Summary",
   "storyViewDescription": "Your story list.",
-  "addStory": "Add Story"
+  "addStory": "Add Story",
+  "thinking": "Thinking...",
+  "addQuestion": "Add Question",
+  "searchResource": "Searching your profile",
+  "success": "Success",
+  "questionAgentCommand": "Enter the knowledge you want to learn"
 }

@@ -26,5 +26,10 @@
   "nextPage": "次のページ",
   "summary": "要約",
   "storyViewDescription": "物語のリストです。",
-  "addStory": "物語を追加"
+  "addStory": "物語を追加",
+  "thinking": "考え中...",
+  "addQuestion": "問題を追加",
+  "searchResource": "あなたに関連する情報を検索",
+  "success": "成功",
+  "questionAgentCommand": "学びたい知識を入力してください"
 }

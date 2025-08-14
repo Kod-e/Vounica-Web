@@ -24,7 +24,6 @@ export const questionAgentController = defineStore('questionAgent', {
   }),
   actions: {
     async start(userInput: string) {
-      if (this.running) this.stop()
       this.events = []
       this.streamText = ''
       this.isStreaming = false
@@ -59,15 +58,6 @@ export const questionAgentController = defineStore('questionAgent', {
           return
         }
       })
-    },
-    stop() {
-      if (this._stream) {
-        this._stream.cancel()
-        this._stream = null
-      }
-      this.running = false
-      this.isStreaming = false
-      this.streamText = ''
     },
   },
 })
