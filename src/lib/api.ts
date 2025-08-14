@@ -19,6 +19,27 @@ export function bindAuth(h: AuthHandlers) {
   handlers = h
 }
 
+// 供手写 fetch（如 SSE）场景使用，构造带鉴权与语言信息的 Headers
+export async function buildAuthHeaders(extra?: Record<string, string>): Promise<Headers> {
+  const headers = new Headers()
+  if (handlers) {
+    const token = await handlers.getToken()
+    if (token) headers.set('Authorization', `Bearer ${token}`)
+  }
+  const langStore = useLangStore()
+  headers.set('Accept-Language', langStore.acceptLanguage)
+  headers.set('Target-Language', langStore.targetLanguage)
+  if (extra) {
+    for (const [k, v] of Object.entries(extra)) headers.set(k, v)
+  }
+  return headers
+}
+
+// 暴露 handlers 以便在 401 时进行统一处理（仅在确需时使用）
+export function getAuthHandlers(): AuthHandlers | null {
+  return handlers
+}
+
 api.use({
   async onRequest({ request }) {
     if (!handlers) return request
