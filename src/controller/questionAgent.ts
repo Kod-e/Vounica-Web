@@ -30,8 +30,10 @@ export const questionAgentController = defineStore('questionAgent', {
       this.isStreaming = false
       this.running = true
       this._stream = await runQuestionAgentStream(userInput, (ev: QuestionAgentEvent) => {
-        // 记录每个事件
-        this.events.push(ev)
+        // 记录除了stream之外的事件
+        if (ev.type !== 'stream_chunk' && ev.type !== 'stream_end') {
+          this.events.push(ev)
+        }
 
         if (isStreamChunkEvent(ev)) {
           if (!this.isStreaming) {
@@ -48,9 +50,9 @@ export const questionAgentController = defineStore('questionAgent', {
           if (text.length > 0) {
             const messageEvent: AgentMessageEvent = {
               type: 'message',
-              data: { emoji: '💬', message: text },
+              data: { emoji: '', message: text },
             }
-            this.events.unshift(messageEvent)
+            this.events.push(messageEvent)
           }
           this.isStreaming = false
           this.streamText = ''
