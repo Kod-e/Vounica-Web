@@ -11,10 +11,7 @@ export type AgentToolCallEvent = components['schemas']['AgentToolCallEvent']
 export type QuestionAgentResult = components['schemas']['QuestionAgentResult']
 export type QuestionAgentEvent = components['schemas']['QuestionAgentEvent']
 
-export type ChoiceQuestion = components['schemas']['ChoiceQuestion']
-export type MatchQuestion = components['schemas']['MatchQuestion']
-export type AssemblyQuestion = components['schemas']['AssemblyQuestion']
-export type Question = ChoiceQuestion | MatchQuestion | AssemblyQuestion
+
 
 export type StreamController = {
   cancel: () => void

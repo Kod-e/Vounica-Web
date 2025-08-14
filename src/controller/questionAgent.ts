@@ -6,6 +6,7 @@ import type {
   AgentStreamEndEvent,
 } from '@/service/questionAgent'
 import { runQuestionAgentStream } from '@/service/questionAgent'
+import { questionController, type Question } from './question'
 
 function isStreamChunkEvent(ev: QuestionAgentEvent): ev is AgentStreamChunkEvent {
   return ev.type === 'stream_chunk'
@@ -56,6 +57,17 @@ export const questionAgentController = defineStore('questionAgent', {
           this.isStreaming = false
           this.streamText = ''
           return
+        }
+
+        // 如果接收到了result事件，则序列化为List Question, 传递到questionController
+        if (ev.type === 'result') {
+          const result = ev.data
+          if (result) {
+            const questions = result as Question[]
+            questionController().pending = questions
+            questionController().start()
+            questionController().is_open = true
+          }
         }
       })
     },
