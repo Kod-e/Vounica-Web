@@ -19,6 +19,7 @@ export type SessionStatus =
 export const questionController = defineStore('question', {
   state: () => ({
     is_open: false as boolean,
+    feedback_text: '' as string,
     status: 'idle' as SessionStatus,
     pending: [] as Question[],
     answers: [] as Question[],

@@ -31,5 +31,9 @@
   "addQuestion": "Add Question",
   "searchResource": "Searching your profile",
   "success": "Success",
-  "questionAgentCommand": "Enter the knowledge you want to learn"
+  "questionAgentCommand": "Enter the knowledge you want to learn",
+  "correct": "Correct",
+  "incorrect": "Incorrect",
+  "correct_answer": "Correct answer is:",
+  "submit": "Submit"
 }

@@ -5,6 +5,7 @@
     </div>
     <div v-else-if="controller.status === 'feedback'">
       <QuestionRouteView />
+      <FeedBackOver />
     </div>
     <div v-else-if="controller.status === 'evaluating'"></div>
     <div v-else-if="controller.status === 'finished'"></div>
@@ -14,6 +15,7 @@
 <script setup lang="ts">
 import { questionController } from '@/controller/question'
 import QuestionRouteView from './QuestionRouteView.vue'
+import FeedBackOver from '@/components/FeedBackOver.vue'
 
 const controller = questionController()
 </script>

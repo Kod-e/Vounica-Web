@@ -53,8 +53,10 @@ function onSelect(option: string) {
 function onSubmit() {
   if (question.value.answer === question.value.correct_answer) {
     controller.correct()
+    controller.feedback_text = t('correct')
   } else {
     controller.incorrect()
+    controller.feedback_text = t('correct_answer') + question.value.correct_answer
   }
 }
 </script>

@@ -31,5 +31,9 @@
   "addQuestion": "問題を追加",
   "searchResource": "あなたに関連する情報を検索",
   "success": "成功",
-  "questionAgentCommand": "学びたい知識を入力してください"
+  "questionAgentCommand": "学びたい知識を入力してください",
+  "correct": "正解",
+  "incorrect": "不正解",
+  "correct_answer": "正解は：",
+  "submit": "送信"
 }
