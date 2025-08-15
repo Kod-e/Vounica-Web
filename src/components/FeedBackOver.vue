@@ -1,14 +1,14 @@
 <template>
   <div class="fixed inset-x-0 bottom-0 z-50 pointer-events-none">
     <div
-      class="pointer-events-auto rounded-t-2xl shadow-2xl h-[30vh] translate-y-0 transition-transform duration-300 ease-out"
+      class="pointer-events-auto rounded-t-3xl shadow-2xl drop-shadow-2xl h-[50vh] translate-y-0 transition-transform duration-300 ease-out"
       :class="[isShow ? 'translate-y-0' : 'translate-y-full', overlayBgClass]"
     >
       <div class="flex justify-center items-center h-1/4">
         <p class="text-lg font-bold">{{ isCorrect ? t('correct') : t('incorrect') }}</p>
       </div>
       <div class="flex justify-center items-center h-1/4">
-        <p class="text-md text-gray-600 font-semibold">{{ text }}</p>
+        <p class="text-md text-gray-900 font-semibold">{{ text }}</p>
       </div>
       <div class="flex justify-center items-center h-1/4">
         <div class="pt-4 w-1/2">
@@ -36,7 +36,7 @@ const isShow = computed(() => controller.status === 'feedback')
 const text = computed(() => controller.feedback_text)
 const isCorrect = computed(() => controller.is_correct)
 
-const overlayBgClass = computed(() => (isCorrect.value === false ? 'bg-rose-500' : 'bg-violet-500'))
+const overlayBgClass = computed(() => (isCorrect.value === false ? 'bg-rose-100' : 'bg-violet-100'))
 
 function onNext() {
   controller.next()
