@@ -104,13 +104,32 @@ function moveToBank(index: number) {
 
 function syncAnswered() {
   if (question.value) question.value.answer = [...answer.value]
-  controller.status = 'answered'
+  const full = question.value && answer.value.length === question.value.correct_answer.length
+  controller.status = full ? 'answered' : 'presenting'
 }
 
 function onSubmit() {
   const corr = question.value.correct_answer
   const ans = answer.value
-  const isSame = ans.length === corr.length && ans.every((v, i) => v === corr[i])
+
+  const normalizeTokens = (tokens: string[]): string => {
+    return tokens
+      .join(' ')
+      .toLowerCase()
+      .normalize('NFKC')
+      .replace(/[“”"‘’'`]/g, '')
+      .replace(/[.,!?;:]/g, '')
+      .replace(/[，。！？；：、]/g, '')
+      .replace(/[「」『』【】〔〕［］｛｝（）()〈〉《》]/g, '')
+      .replace(/[・…·•．]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+  }
+
+  const normAns = normalizeTokens(ans)
+  const normCorr = normalizeTokens(corr)
+  const isSame = normAns === normCorr
+
   if (isSame) {
     controller.correct()
     controller.feedback_text = t('correct')
