@@ -1,5 +1,5 @@
 import { apiBase } from '@/lib/apiBase'
-import { buildAuthHeaders, getAuthHandlers } from '@/lib/api'
+import { buildAuthHeaders } from '@/lib/api'
 import type { components } from '@/types/api'
 
 type RecordAgentEvent = components['schemas']['RecordAgentEvent']
@@ -17,76 +17,47 @@ export async function runRecordAgentStream(
   questions: Question[],
   onEvent: (ev: RecordAgentEvent) => void,
 ): Promise<StreamController> {
-  const url = `${apiBase}/v1/question/agent/record/stream`
   const controller = new AbortController()
 
-  const headers = await buildAuthHeaders({
-    'Content-Type': 'application/json',
-    Accept: 'text/event-stream',
-  })
+  const baseUrl = apiBase.replace(/^http/, 'ws')
+  const headers = await buildAuthHeaders()
+  const token = headers.get('Authorization')?.replace('Bearer ', '') ?? ''
+  const acceptLanguage = headers.get('Accept-Language') ?? ''
+  const targetLanguage = headers.get('Target-Language') ?? ''
 
-  const resp = await fetch(url, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(questions),
-    signal: controller.signal,
-  })
+  const url = new URL('/v1/question/agent/record/ws', baseUrl)
+  if (token) url.searchParams.set('token', token)
+  if (acceptLanguage) url.searchParams.set('accept_language', acceptLanguage)
+  if (targetLanguage) url.searchParams.set('target_language', targetLanguage)
 
-  if (resp.status === 401) {
-    const h = getAuthHandlers()
-    if (h) await h.onAuthLost()
-    throw new Error('UNAUTHORIZED')
-  }
-  if (!resp.ok || !resp.body) {
-    throw new Error(`Request failed: ${resp.status}`)
-  }
+  const ws = new WebSocket(url.toString())
 
-  const stream = resp.body
-  if (!stream) throw new Error('No response body')
-
-  const reader = stream.getReader()
-  const decoder = new TextDecoder('utf-8')
-  let buffer = ''
-
-  ;(async () => {
+  let closed = false
+  const cleanup = () => {
+    if (closed) return
+    closed = true
     try {
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-        buffer += decoder.decode(value, { stream: true })
-        const splitIndex = buffer.lastIndexOf('\n\n')
-        if (splitIndex !== -1) {
-          const blocks = buffer.slice(0, splitIndex + 2)
-          buffer = buffer.slice(splitIndex + 2)
-          const frames = blocks.split(/\n\n/).filter(Boolean)
-          for (const frame of frames) {
-            const dataLine = frame.split(/\r?\n/).find((l) => l.startsWith('data:'))
-            if (!dataLine) continue
-            const json = dataLine.slice(5).trimStart()
-            if (!json) continue
-            try {
-              const ev = JSON.parse(json) as RecordAgentEvent
-              onEvent(ev)
-            } catch {}
-          }
-        }
-      }
-      const tail = buffer.trim()
-      if (tail.startsWith('data:')) {
-        const json = tail.slice(5).trimStart()
-        try {
-          const ev = JSON.parse(json) as RecordAgentEvent
-          onEvent(ev)
-        } catch {}
-      }
-    } catch (err) {
-      if (!(err instanceof DOMException && err.name === 'AbortError')) {
-        throw err
-      }
-    } finally {
-      reader.releaseLock()
-    }
-  })()
+      ws.close()
+    } catch {}
+  }
+
+  controller.signal.addEventListener('abort', cleanup)
+
+  ws.onopen = () => {
+    try {
+      ws.send(JSON.stringify(questions))
+    } catch {}
+  }
+
+  ws.onmessage = (evt) => {
+    try {
+      const data = JSON.parse(evt.data)
+      onEvent(data as RecordAgentEvent)
+    } catch {}
+  }
+
+  ws.onerror = () => {}
+  ws.onclose = () => cleanup()
 
   return {
     cancel: () => controller.abort(),
