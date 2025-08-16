@@ -7,8 +7,12 @@
       <QuestionRouteView />
       <FeedBackOver />
     </div>
-    <div v-else-if="controller.status === 'evaluating'"></div>
-    <div v-else-if="controller.status === 'finished'"></div>
+    <div v-else-if="controller.status === 'evaluating'">
+      <RecordAgentView />
+    </div>
+    <div v-else-if="controller.status === 'finished'">
+      <RecordFeedBackView />
+    </div>
   </div>
 </template>
 
@@ -16,6 +20,8 @@
 import { questionController } from '@/controller/question'
 import QuestionRouteView from './QuestionRouteView.vue'
 import FeedBackOver from '@/components/FeedBackOver.vue'
+import RecordAgentView from './RecordAgentView.vue'
+import RecordFeedBackView from './RecordFeedBackView.vue'
 
 const controller = questionController()
 </script>

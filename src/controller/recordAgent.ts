@@ -1,35 +1,37 @@
 import { defineStore } from 'pinia'
-import { runQuestionAgentStream } from '@/service/questionAgent'
-import { questionController, type Question } from './question'
+import type { Question } from '@/service/recordAgent'
+import { runRecordAgentStream } from '@/service/recordAgent'
 import type { components } from '@/types/api'
+import { questionController } from './question'
 
-type QuestionAgentEvent = components['schemas']['QuestionAgentEvent']
+type RecordAgentEvent = components['schemas']['RecordAgentEvent']
 type AgentStreamChunkEvent = components['schemas']['AgentStreamChunkEvent']
 type AgentStreamEndEvent = components['schemas']['AgentStreamEndEvent']
 type AgentMessageEvent = components['schemas']['AgentMessageEvent']
 
-function isStreamChunkEvent(ev: QuestionAgentEvent): ev is AgentStreamChunkEvent {
+function isStreamChunkEvent(ev: RecordAgentEvent): ev is AgentStreamChunkEvent {
   return ev.type === 'stream_chunk'
 }
-function isStreamEndEvent(ev: QuestionAgentEvent): ev is AgentStreamEndEvent {
+
+function isStreamEndEvent(ev: RecordAgentEvent): ev is AgentStreamEndEvent {
   return ev.type === 'stream_end'
 }
 
-export const questionAgentController = defineStore('questionAgent', {
+export const recordAgentController = defineStore('recordAgent', {
   state: () => ({
-    events: [] as QuestionAgentEvent[],
+    events: [] as RecordAgentEvent[],
     running: false,
     isStreaming: false,
     streamText: '' as string,
     _stream: null as null | { cancel: () => void },
   }),
   actions: {
-    async start(userInput: string) {
+    async start(questions: Question[]) {
       this.events = []
-      this.streamText = ''
-      this.isStreaming = false
       this.running = true
-      this._stream = await runQuestionAgentStream(userInput, (ev: QuestionAgentEvent) => {
+      this.isStreaming = false
+      this.streamText = '' as string
+      this._stream = await runRecordAgentStream(questions, (ev: RecordAgentEvent) => {
         // 记录除了stream之外的事件
         if (ev.type !== 'stream_chunk' && ev.type !== 'stream_end') {
           this.events.push(ev)
@@ -59,14 +61,13 @@ export const questionAgentController = defineStore('questionAgent', {
           return
         }
 
-        // 如果接收到了result事件，则序列化为List Question, 传递到questionController
         if (ev.type === 'result') {
-          const result = ev.data
-          if (result) {
-            const questions = result as Question[]
-            questionController().pending = questions
-            questionController().start()
-            questionController().is_open = true
+          const resultData = ev.data
+          if (resultData) {
+            const judgeResults = resultData.judge_results
+            questionController().judge_results = judgeResults
+            questionController().suggestion = resultData.suggestion
+            questionController().finish_evaluating()
           }
         }
       })

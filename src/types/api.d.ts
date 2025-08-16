@@ -572,7 +572,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/question/agent/chat/stream": {
+    "/v1/question/agent/question/stream": {
         parameters: {
             query?: never;
             header?: never;
@@ -582,17 +582,17 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Make Question By Chat Stream
+         * Make Question By Agent Stream
          * @description 即时流式返回 Agent 进度与结果 (SSE)。
          */
-        post: operations["make_question_by_chat_stream_v1_question_agent_chat_stream_post"];
+        post: operations["make_question_by_agent_stream_v1_question_agent_question_stream_post"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/v1/question/agent/chat": {
+    "/v1/question/agent/question": {
         parameters: {
             query?: never;
             header?: never;
@@ -601,8 +601,8 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Make Question By Chat */
-        post: operations["make_question_by_chat_v1_question_agent_chat_post"];
+        /** Make Question By Agent */
+        post: operations["make_question_by_agent_v1_question_agent_question_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -643,7 +643,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/question/record/stream": {
+    "/v1/question/agent/record/stream": {
         parameters: {
             query?: never;
             header?: never;
@@ -653,7 +653,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** Record Question By Stream */
-        post: operations["record_question_by_stream_v1_question_record_stream_post"];
+        post: operations["record_question_by_stream_v1_question_agent_record_stream_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1154,8 +1154,14 @@ export interface components {
              * @enum {string}
              */
             type: "result";
-            /** Data */
-            data: components["schemas"]["JudgeResult"][];
+            data: components["schemas"]["RecordAgentResultData"];
+        };
+        /** RecordAgentResultData */
+        RecordAgentResultData: {
+            /** Judge Results */
+            judge_results: components["schemas"]["JudgeResult"][];
+            /** Suggestion */
+            suggestion: string;
         };
         /** RefreshResponseSchema */
         RefreshResponseSchema: {
@@ -2542,7 +2548,7 @@ export interface operations {
             };
         };
     };
-    make_question_by_chat_stream_v1_question_agent_chat_stream_post: {
+    make_question_by_agent_stream_v1_question_agent_question_stream_post: {
         parameters: {
             query?: never;
             header?: {
@@ -2580,7 +2586,7 @@ export interface operations {
             };
         };
     };
-    make_question_by_chat_v1_question_agent_chat_post: {
+    make_question_by_agent_v1_question_agent_question_post: {
         parameters: {
             query?: never;
             header?: {
@@ -2691,7 +2697,7 @@ export interface operations {
             };
         };
     };
-    record_question_by_stream_v1_question_record_stream_post: {
+    record_question_by_stream_v1_question_agent_record_stream_post: {
         parameters: {
             query?: never;
             header?: {

@@ -1823,12 +1823,12 @@
         }
       }
     },
-    "/v1/question/agent/chat/stream": {
+    "/v1/question/agent/question/stream": {
       "post": {
         "tags": ["v1", "question"],
-        "summary": "Make Question By Chat Stream",
+        "summary": "Make Question By Agent Stream",
         "description": "即时流式返回 Agent 进度与结果 (SSE)。",
-        "operationId": "make_question_by_chat_stream_v1_question_agent_chat_stream_post",
+        "operationId": "make_question_by_agent_stream_v1_question_agent_question_stream_post",
         "parameters": [
           {
             "name": "Authorization",
@@ -1887,11 +1887,11 @@
         }
       }
     },
-    "/v1/question/agent/chat": {
+    "/v1/question/agent/question": {
       "post": {
         "tags": ["v1", "question"],
-        "summary": "Make Question By Chat",
-        "operationId": "make_question_by_chat_v1_question_agent_chat_post",
+        "summary": "Make Question By Agent",
+        "operationId": "make_question_by_agent_v1_question_agent_question_post",
         "parameters": [
           {
             "name": "Authorization",
@@ -1949,7 +1949,7 @@
                       }
                     }
                   },
-                  "title": "Response Make Question By Chat V1 Question Agent Chat Post"
+                  "title": "Response Make Question By Agent V1 Question Agent Question Post"
                 }
               }
             }
@@ -2116,11 +2116,11 @@
         }
       }
     },
-    "/v1/question/record/stream": {
+    "/v1/question/agent/record/stream": {
       "post": {
         "tags": ["v1", "question"],
         "summary": "Record Question By Stream",
-        "operationId": "record_question_by_stream_v1_question_record_stream_post",
+        "operationId": "record_question_by_stream_v1_question_agent_record_stream_post",
         "parameters": [
           {
             "name": "Authorization",
@@ -2846,15 +2846,24 @@
       "RecordAgentResult": {
         "properties": {
           "type": { "type": "string", "const": "result", "title": "Type", "default": "result" },
-          "data": {
-            "items": { "$ref": "#/components/schemas/JudgeResult" },
-            "type": "array",
-            "title": "Data"
-          }
+          "data": { "$ref": "#/components/schemas/RecordAgentResultData" }
         },
         "type": "object",
         "required": ["data"],
         "title": "RecordAgentResult"
+      },
+      "RecordAgentResultData": {
+        "properties": {
+          "judge_results": {
+            "items": { "$ref": "#/components/schemas/JudgeResult" },
+            "type": "array",
+            "title": "Judge Results"
+          },
+          "suggestion": { "type": "string", "title": "Suggestion" }
+        },
+        "type": "object",
+        "required": ["judge_results", "suggestion"],
+        "title": "RecordAgentResultData"
       },
       "RefreshResponseSchema": {
         "properties": { "access_token": { "type": "string", "title": "Access Token" } },

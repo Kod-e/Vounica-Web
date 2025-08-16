@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia'
 import type { components } from '@/types/api'
+import { recordAgentController } from './recordAgent'
+
+type JudgeResult = components['schemas']['JudgeResult']
 
 export type ChoiceQuestion = components['schemas']['ChoiceQuestion']
 export type MatchQuestion = components['schemas']['MatchQuestion']
@@ -24,7 +27,9 @@ export const questionController = defineStore('question', {
     pending: [] as Question[],
     answers: [] as Question[],
     question: null as Question | null,
+    judge_results: null as JudgeResult[] | null,
     is_correct: null as boolean | null,
+    suggestion: null as string | null,
   }),
 
   actions: {
@@ -54,7 +59,7 @@ export const questionController = defineStore('question', {
       if (!current) {
         // 没有当前题，尝试启动或结束
         if (this.pending.length === 0) {
-          this.status = 'evaluating'
+          this.evaluating()
           return
         }
         this.question = this.pending[0]
@@ -85,8 +90,15 @@ export const questionController = defineStore('question', {
         this.status = 'presenting'
       } else {
         this.question = null
-        this.status = 'evaluating'
+        this.evaluating()
       }
+    },
+    evaluating() {
+      this.status = 'evaluating'
+      recordAgentController().start(this.answers)
+    },
+    finish_evaluating() {
+      this.status = 'finished'
     },
   },
 })

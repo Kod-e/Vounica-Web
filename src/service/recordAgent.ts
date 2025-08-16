@@ -2,18 +2,22 @@ import { apiBase } from '@/lib/apiBase'
 import { buildAuthHeaders, getAuthHandlers } from '@/lib/api'
 import type { components } from '@/types/api'
 
-type QuestionAgentEvent = components['schemas']['QuestionAgentEvent']
+type RecordAgentEvent = components['schemas']['RecordAgentEvent']
+export type ChoiceQuestion = components['schemas']['ChoiceQuestion']
+export type MatchQuestion = components['schemas']['MatchQuestion']
+export type AssemblyQuestion = components['schemas']['AssemblyQuestion']
+
+export type Question = ChoiceQuestion | MatchQuestion | AssemblyQuestion
 
 export type StreamController = {
-  // 一开始想到可能会有用的, 不过看起来没用上
   cancel: () => void
 }
 
-export async function runQuestionAgentStream(
-  userInput: string,
-  onEvent: (ev: QuestionAgentEvent) => void,
+export async function runRecordAgentStream(
+  questions: Question[],
+  onEvent: (ev: RecordAgentEvent) => void,
 ): Promise<StreamController> {
-  const url = `${apiBase}/v1/question/agent/question/stream`
+  const url = `${apiBase}/v1/question/agent/record/stream`
   const controller = new AbortController()
 
   const headers = await buildAuthHeaders({
@@ -24,7 +28,7 @@ export async function runQuestionAgentStream(
   const resp = await fetch(url, {
     method: 'POST',
     headers,
-    body: JSON.stringify(userInput),
+    body: JSON.stringify(questions),
     signal: controller.signal,
   })
 
@@ -61,7 +65,7 @@ export async function runQuestionAgentStream(
             const json = dataLine.slice(5).trimStart()
             if (!json) continue
             try {
-              const ev = JSON.parse(json) as QuestionAgentEvent
+              const ev = JSON.parse(json) as RecordAgentEvent
               onEvent(ev)
             } catch {}
           }
@@ -71,7 +75,7 @@ export async function runQuestionAgentStream(
       if (tail.startsWith('data:')) {
         const json = tail.slice(5).trimStart()
         try {
-          const ev = JSON.parse(json) as QuestionAgentEvent
+          const ev = JSON.parse(json) as RecordAgentEvent
           onEvent(ev)
         } catch {}
       }
