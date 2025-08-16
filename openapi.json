@@ -2032,6 +2032,236 @@
         }
       }
     },
+    "/v1/question/record": {
+      "post": {
+        "tags": ["v1", "question"],
+        "summary": "Record Question",
+        "operationId": "record_question_v1_question_record_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/ChoiceQuestion" },
+                    { "$ref": "#/components/schemas/MatchQuestion" },
+                    { "$ref": "#/components/schemas/AssemblyQuestion" }
+                  ],
+                  "discriminator": {
+                    "propertyName": "question_type",
+                    "mapping": {
+                      "choice": "#/components/schemas/ChoiceQuestion",
+                      "match": "#/components/schemas/MatchQuestion",
+                      "assembly": "#/components/schemas/AssemblyQuestion"
+                    }
+                  }
+                },
+                "title": "Questions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/JudgeResult" },
+                  "title": "Response Record Question V1 Question Record Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/question/record/stream": {
+      "post": {
+        "tags": ["v1", "question"],
+        "summary": "Record Question By Stream",
+        "operationId": "record_question_by_stream_v1_question_record_stream_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/ChoiceQuestion" },
+                    { "$ref": "#/components/schemas/MatchQuestion" },
+                    { "$ref": "#/components/schemas/AssemblyQuestion" }
+                  ],
+                  "discriminator": {
+                    "propertyName": "question_type",
+                    "mapping": {
+                      "choice": "#/components/schemas/ChoiceQuestion",
+                      "match": "#/components/schemas/MatchQuestion",
+                      "assembly": "#/components/schemas/AssemblyQuestion"
+                    }
+                  }
+                },
+                "title": "Questions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "SSE stream; each 'data:' line is one JSON RecordAgentEvent",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/RecordAgentEvent" } },
+              "text/event-stream": { "schema": { "$ref": "#/components/schemas/RecordAgentEvent" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/question/error_reason": {
+      "post": {
+        "tags": ["v1", "question"],
+        "summary": "Get Error Reason",
+        "operationId": "get_error_reason_v1_question_error_reason_post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Authorization"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "name": "Target-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Target-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  { "$ref": "#/components/schemas/ChoiceQuestion" },
+                  { "$ref": "#/components/schemas/MatchQuestion" },
+                  { "$ref": "#/components/schemas/AssemblyQuestion" }
+                ],
+                "title": "Question"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/JudgeResult" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/health/health": {
       "get": {
         "summary": "Health Check",
@@ -2153,7 +2383,7 @@
         "type": "object",
         "required": ["stem", "options", "correct_answer"],
         "title": "AssemblyQuestion",
-        "description": "Assembly question (fill in the blanks)."
+        "description": "Assembly question (fill in the blanks).\n\n選択(せんたく)語(ご)の組(く)み立(た)て問題(もんだい)。"
       },
       "ChoiceQuestion": {
         "properties": {
@@ -2590,6 +2820,41 @@
         "type": "object",
         "required": ["data"],
         "title": "QuestionAgentResult"
+      },
+      "RecordAgentEvent": {
+        "oneOf": [
+          { "$ref": "#/components/schemas/AgentMessageEvent" },
+          { "$ref": "#/components/schemas/RecordAgentResult" },
+          { "$ref": "#/components/schemas/AgentThinkingEvent" },
+          { "$ref": "#/components/schemas/AgentStreamChunkEvent" },
+          { "$ref": "#/components/schemas/AgentStreamEndEvent" },
+          { "$ref": "#/components/schemas/AgentToolCallEvent" }
+        ],
+        "title": "RecordAgentEvent",
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "message": "#/components/schemas/AgentMessageEvent",
+            "result": "#/components/schemas/RecordAgentResult",
+            "stream_chunk": "#/components/schemas/AgentStreamChunkEvent",
+            "stream_end": "#/components/schemas/AgentStreamEndEvent",
+            "thinking": "#/components/schemas/AgentThinkingEvent",
+            "tool_call": "#/components/schemas/AgentToolCallEvent"
+          }
+        }
+      },
+      "RecordAgentResult": {
+        "properties": {
+          "type": { "type": "string", "const": "result", "title": "Type", "default": "result" },
+          "data": {
+            "items": { "$ref": "#/components/schemas/JudgeResult" },
+            "type": "array",
+            "title": "Data"
+          }
+        },
+        "type": "object",
+        "required": ["data"],
+        "title": "RecordAgentResult"
       },
       "RefreshResponseSchema": {
         "properties": { "access_token": { "type": "string", "title": "Access Token" } },

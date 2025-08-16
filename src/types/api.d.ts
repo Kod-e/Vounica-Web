@@ -626,6 +626,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/question/record": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Record Question */
+        post: operations["record_question_v1_question_record_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/question/record/stream": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Record Question By Stream */
+        post: operations["record_question_by_stream_v1_question_record_stream_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/question/error_reason": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Get Error Reason */
+        post: operations["get_error_reason_v1_question_error_reason_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health/health": {
         parameters: {
             query?: never;
@@ -718,6 +769,8 @@ export interface components {
         /**
          * AssemblyQuestion
          * @description Assembly question (fill in the blanks).
+         *
+         *     選択(せんたく)語(ご)の組(く)み立(た)て問題(もんだい)。
          */
         AssemblyQuestion: {
             /**
@@ -1091,6 +1144,18 @@ export interface components {
             type: "result";
             /** Data */
             data: (components["schemas"]["ChoiceQuestion"] | components["schemas"]["MatchQuestion"] | components["schemas"]["AssemblyQuestion"])[];
+        };
+        /** RecordAgentEvent */
+        RecordAgentEvent: components["schemas"]["AgentMessageEvent"] | components["schemas"]["RecordAgentResult"] | components["schemas"]["AgentThinkingEvent"] | components["schemas"]["AgentStreamChunkEvent"] | components["schemas"]["AgentStreamEndEvent"] | components["schemas"]["AgentToolCallEvent"];
+        /** RecordAgentResult */
+        RecordAgentResult: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "result";
+            /** Data */
+            data: components["schemas"]["JudgeResult"][];
         };
         /** RefreshResponseSchema */
         RefreshResponseSchema: {
@@ -2553,6 +2618,118 @@ export interface operations {
         };
     };
     judge_question_v1_question_judge_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                Authorization?: string | null;
+                "Accept-Language"?: string | null;
+                "Target-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChoiceQuestion"] | components["schemas"]["MatchQuestion"] | components["schemas"]["AssemblyQuestion"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JudgeResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    record_question_v1_question_record_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                Authorization?: string | null;
+                "Accept-Language"?: string | null;
+                "Target-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": (components["schemas"]["ChoiceQuestion"] | components["schemas"]["MatchQuestion"] | components["schemas"]["AssemblyQuestion"])[];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JudgeResult"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    record_question_by_stream_v1_question_record_stream_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                Authorization?: string | null;
+                "Accept-Language"?: string | null;
+                "Target-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": (components["schemas"]["ChoiceQuestion"] | components["schemas"]["MatchQuestion"] | components["schemas"]["AssemblyQuestion"])[];
+            };
+        };
+        responses: {
+            /** @description SSE stream; each 'data:' line is one JSON RecordAgentEvent */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecordAgentEvent"];
+                    "text/event-stream": components["schemas"]["RecordAgentEvent"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_error_reason_v1_question_error_reason_post: {
         parameters: {
             query?: never;
             header?: {
