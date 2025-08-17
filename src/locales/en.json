@@ -35,5 +35,6 @@
   "correct": "Correct",
   "incorrect": "Incorrect",
   "correct_answer": "Correct answer is:",
-  "submit": "Submit"
+  "submit": "Submit",
+  "finish": "Finish"
 }

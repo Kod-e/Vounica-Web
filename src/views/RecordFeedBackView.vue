@@ -23,6 +23,17 @@
         <p class="text-md text-gray-500 mb-2">{{ judge_result.error_reason }}</p>
       </div>
     </div>
+
+    <!-- Finish button at bottom -->
+    <div class="mt-8">
+      <button
+        type="button"
+        class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-white text-sm font-semibold hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        @click="onFinish"
+      >
+        {{ t('finish') }}
+      </button>
+    </div>
   </div>
 </template>
 
@@ -32,4 +43,8 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 const controller = questionController()
+
+function onFinish() {
+  controller.$reset()
+}
 </script>

@@ -35,5 +35,6 @@
   "correct": "正确",
   "incorrect": "错误",
   "correct_answer": "正确答案是：",
-  "submit": "提交"
+  "submit": "提交",
+  "finish": "完成"
 }

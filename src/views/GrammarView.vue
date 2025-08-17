@@ -26,7 +26,7 @@
                 </th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200 bg-white" v-if="grammarStore.isLoading">
+            <tbody class="divide-y divide-gray-200 bg-white" v-if="!grammarStore.isLoading">
               <tr v-for="grammar in grammars" :key="grammar.id!">
                 <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">
                   {{ grammar.name }}

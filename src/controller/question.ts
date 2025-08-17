@@ -19,6 +19,18 @@ export type SessionStatus =
   | 'evaluating'
   | 'finished'
   | 'error'
+
+// 对题目做一次快照，避免后续同一对象的修改影响已记录的历史答案
+function snapshotQuestion(q: Question): Question {
+  try {
+    // structuredClone 在现代浏览器可用
+    return structuredClone(q)
+  } catch {
+    // 退化到 JSON 深拷贝
+    return JSON.parse(JSON.stringify(q)) as Question
+  }
+}
+
 export const questionController = defineStore('question', {
   state: () => ({
     is_open: false as boolean,
@@ -76,8 +88,8 @@ export const questionController = defineStore('question', {
         if (idx >= 0) this.pending.splice(idx, 1)
       }
 
-      // 记录答案（无论对错，均入 answers）
-      this.answers.push(current)
+      // 记录答案（无论对错，均入 answers）——使用快照，避免后续修改污染历史记录
+      this.answers.push(snapshotQuestion(current))
 
       // 错题回流到队尾
       if (this.is_correct === false) {

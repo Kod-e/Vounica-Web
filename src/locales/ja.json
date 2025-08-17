@@ -35,5 +35,6 @@
   "correct": "正解",
   "incorrect": "不正解",
   "correct_answer": "正解は：",
-  "submit": "送信"
+  "submit": "送信",
+  "finish": "完了"
 }
