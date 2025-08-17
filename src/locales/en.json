@@ -36,5 +36,19 @@
   "incorrect": "Incorrect",
   "correct_answer": "Correct answer is:",
   "submit": "Submit",
-  "finish": "Finish"
+  "finish": "Finish",
+  "getQuestions": "Get Questions",
+  "getQuestionsDescription": "Check if the generated questions meet the requirements",
+  "addAndRecordVocab": "Add and Record Vocab",
+  "addAndRecordGrammar": "Add and Record Grammar",
+  "recordVocab": "Record Vocab",
+  "recordGrammar": "Record Grammar",
+  "addMemory": "Add Memory",
+  "updateMemory": "Update Memory",
+  "deleteMemory": "Delete Memory",
+  "choiceQuestion": "Choice Question",
+  "matchQuestion": "Match Question",
+  "assemblyQuestion": "Assembly Question",
+  "vectorSearch": "Vector Search",
+  "textSearch": "Text Search"
 }

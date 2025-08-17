@@ -36,5 +36,21 @@
   "incorrect": "错误",
   "correct_answer": "正确答案是：",
   "submit": "提交",
-  "finish": "完成"
+  "finish": "完成",
+
+  "getQuestions": "获取题目",
+  "getQuestionsDescription": "检查生成的题目是否符合要求",
+  "addAndRecordVocab": "添加并记录词汇",
+  "addAndRecordGrammar": "添加并记录语法",
+  "recordVocab": "记录词汇",
+  "recordGrammar": "记录语法",
+  "addMemory": "添加记忆",
+  "updateMemory": "更新记忆",
+  "deleteMemory": "删除记忆",
+
+  "choiceQuestion": "选择题",
+  "matchQuestion": "匹配题",
+  "assemblyQuestion": "拼词题",
+  "vectorSearch": "语意相似搜索",
+  "textSearch": "文本匹配搜索"
 }

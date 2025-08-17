@@ -36,5 +36,19 @@
   "incorrect": "不正解",
   "correct_answer": "正解は：",
   "submit": "送信",
-  "finish": "完了"
+  "finish": "完了",
+  "getQuestions": "問題を取得",
+  "getQuestionsDescription": "生成された問題が要件を満たしているか確認します",
+  "addAndRecordVocab": "単語を追加して記録",
+  "addAndRecordGrammar": "文法を追加して記録",
+  "recordVocab": "単語を記録",
+  "recordGrammar": "文法を記録",
+  "addMemory": "記憶を追加",
+  "updateMemory": "記憶を更新",
+  "deleteMemory": "記憶を削除",
+  "choiceQuestion": "選択問題",
+  "matchQuestion": "マッチング問題",
+  "assemblyQuestion": "パズル問題",
+  "vectorSearch": "意味的類似検索",
+  "textSearch": "テキスト一致検索"
 }

@@ -48,15 +48,10 @@
                 <p class="text-md font-bold text-gray-800">{{ t('thinking') }}</p>
               </div>
               <div v-else-if="event.type === 'tool_call'">
-                <div v-if="/^add_.*_question$/.test(event.data?.tool_name ?? '')">
-                  {{ t('addQuestion') }}
-                </div>
-                <div v-else-if="event.data?.tool_name === 'search_resource'">
-                  {{ t('searchResource') }}
-                </div>
-                <p v-else class="text-sm text-gray-500">
-                  {{ event.data?.tool_name }}: {{ event.data?.tool_data }}
-                </p>
+                <ToolDescripton
+                  :tool_name="event.data?.tool_name ?? ''"
+                  :tool_data="event.data?.tool_data"
+                />
               </div>
               <div v-else-if="event.type === 'result'">
                 {{ t('success') }}
@@ -95,6 +90,7 @@
 import { questionAgentController } from '@/controller/questionAgent'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import ToolDescripton from '@/components/event/ToolDescripton.vue'
 
 const { t } = useI18n()
 
