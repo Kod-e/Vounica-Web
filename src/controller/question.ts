@@ -22,6 +22,7 @@ export type SessionStatus =
 export const questionController = defineStore('question', {
   state: () => ({
     is_open: false as boolean,
+    user_input: '' as string,
     feedback_text: '' as string,
     status: 'idle' as SessionStatus,
     pending: [] as Question[],
@@ -95,7 +96,7 @@ export const questionController = defineStore('question', {
     },
     evaluating() {
       this.status = 'evaluating'
-      recordAgentController().start(this.answers)
+      recordAgentController().start(this.answers, this.user_input)
     },
     finish_evaluating() {
       this.status = 'finished'

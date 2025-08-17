@@ -16,6 +16,7 @@ export type StreamController = {
 export async function runRecordAgentStream(
   questions: Question[],
   onEvent: (ev: RecordAgentEvent) => void,
+  userInput: string,
 ): Promise<StreamController> {
   const controller = new AbortController()
 
@@ -45,7 +46,15 @@ export async function runRecordAgentStream(
 
   ws.onopen = () => {
     try {
-      ws.send(JSON.stringify(questions))
+      let normalizedQuestions: Question[] | string = questions as unknown as Question[] | string
+      if (typeof normalizedQuestions === 'string') {
+        try {
+          normalizedQuestions = JSON.parse(normalizedQuestions) as Question[]
+        } catch {}
+      }
+      ws.send(
+        JSON.stringify({ questions: normalizedQuestions as Question[], user_input: userInput }),
+      )
     } catch {}
   }
 

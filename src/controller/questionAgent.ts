@@ -67,6 +67,7 @@ export const questionAgentController = defineStore('questionAgent', {
             questionController().pending = questions
             questionController().start()
             questionController().is_open = true
+            questionController().user_input = userInput
           }
         }
       })

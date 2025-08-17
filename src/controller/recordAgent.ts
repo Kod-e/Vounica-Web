@@ -26,51 +26,55 @@ export const recordAgentController = defineStore('recordAgent', {
     _stream: null as null | { cancel: () => void },
   }),
   actions: {
-    async start(questions: Question[]) {
+    async start(questions: Question[], userInput: string) {
       this.events = []
       this.running = true
       this.isStreaming = false
       this.streamText = '' as string
-      this._stream = await runRecordAgentStream(questions, (ev: RecordAgentEvent) => {
-        // 记录除了stream之外的事件
-        if (ev.type !== 'stream_chunk' && ev.type !== 'stream_end') {
-          this.events.push(ev)
-        }
-
-        if (isStreamChunkEvent(ev)) {
-          if (!this.isStreaming) {
-            this.isStreaming = true
-            this.streamText = ''
+      this._stream = await runRecordAgentStream(
+        questions,
+        (ev: RecordAgentEvent) => {
+          // 记录除了stream之外的事件
+          if (ev.type !== 'stream_chunk' && ev.type !== 'stream_end') {
+            this.events.push(ev)
           }
-          const chunk = ev.data?.chunk ?? ''
-          if (chunk) this.streamText += chunk
-          return
-        }
 
-        if (isStreamEndEvent(ev)) {
-          const text = this.streamText.trim()
-          if (text.length > 0) {
-            const messageEvent: AgentMessageEvent = {
-              type: 'message',
-              data: { emoji: '', message: text },
+          if (isStreamChunkEvent(ev)) {
+            if (!this.isStreaming) {
+              this.isStreaming = true
+              this.streamText = ''
             }
-            this.events.push(messageEvent)
+            const chunk = ev.data?.chunk ?? ''
+            if (chunk) this.streamText += chunk
+            return
           }
-          this.isStreaming = false
-          this.streamText = ''
-          return
-        }
 
-        if (ev.type === 'result') {
-          const resultData = ev.data
-          if (resultData) {
-            const judgeResults = resultData.judge_results
-            questionController().judge_results = judgeResults
-            questionController().suggestion = resultData.suggestion
-            questionController().finish_evaluating()
+          if (isStreamEndEvent(ev)) {
+            const text = this.streamText.trim()
+            if (text.length > 0) {
+              const messageEvent: AgentMessageEvent = {
+                type: 'message',
+                data: { emoji: '', message: text },
+              }
+              this.events.push(messageEvent)
+            }
+            this.isStreaming = false
+            this.streamText = ''
+            return
           }
-        }
-      })
+
+          if (ev.type === 'result') {
+            const resultData = ev.data
+            if (resultData) {
+              const judgeResults = resultData.judge_results
+              questionController().judge_results = judgeResults
+              questionController().suggestion = resultData.suggestion
+              questionController().finish_evaluating()
+            }
+          }
+        },
+        userInput,
+      )
     },
   },
 })
