@@ -763,8 +763,10 @@ export interface components {
         AgentToolData: {
             /** Tool Name */
             tool_name: string;
-            /** Tool Input */
-            tool_input: string;
+            /** Tool Data */
+            tool_data: {
+                [key: string]: unknown;
+            };
         };
         /**
          * AssemblyQuestion
@@ -918,9 +920,9 @@ export interface components {
             /** Answer */
             answer: string;
             /** Correct Answer */
-            correct_answer?: string;
+            correct_answer?: string | null;
             /** Error Reason */
-            error_reason?: string;
+            error_reason?: string | null;
         };
         /** LoginSchema */
         LoginSchema: {
@@ -1146,15 +1148,13 @@ export interface components {
             data: (components["schemas"]["ChoiceQuestion"] | components["schemas"]["MatchQuestion"] | components["schemas"]["AssemblyQuestion"])[];
         };
         /** RecordAgentEvent */
-        RecordAgentEvent: components["schemas"]["AgentMessageEvent"] | components["schemas"]["RecordAgentResult"] | components["schemas"]["AgentThinkingEvent"] | components["schemas"]["AgentStreamChunkEvent"] | components["schemas"]["AgentStreamEndEvent"] | components["schemas"]["AgentToolCallEvent"];
-        /** RecordAgentResult */
-        RecordAgentResult: {
-            /**
-             * @description discriminator enum property added by openapi-typescript
-             * @enum {string}
-             */
-            type: "result";
-            data: components["schemas"]["RecordAgentResultData"];
+        RecordAgentEvent: components["schemas"]["AgentMessageEvent"] | components["schemas"]["RecordAgentResultEvent"] | components["schemas"]["AgentThinkingEvent"] | components["schemas"]["AgentStreamChunkEvent"] | components["schemas"]["AgentStreamEndEvent"] | components["schemas"]["AgentToolCallEvent"];
+        /** RecordAgentRequestData */
+        RecordAgentRequestData: {
+            /** Questions */
+            questions: (components["schemas"]["ChoiceQuestion"] | components["schemas"]["MatchQuestion"] | components["schemas"]["AssemblyQuestion"])[];
+            /** User Input */
+            user_input: string;
         };
         /** RecordAgentResultData */
         RecordAgentResultData: {
@@ -1162,6 +1162,15 @@ export interface components {
             judge_results: components["schemas"]["JudgeResult"][];
             /** Suggestion */
             suggestion: string;
+        };
+        /** RecordAgentResultEvent */
+        RecordAgentResultEvent: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "result";
+            data: components["schemas"]["RecordAgentResultData"];
         };
         /** RefreshResponseSchema */
         RefreshResponseSchema: {
@@ -2673,7 +2682,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": (components["schemas"]["ChoiceQuestion"] | components["schemas"]["MatchQuestion"] | components["schemas"]["AssemblyQuestion"])[];
+                "application/json": components["schemas"]["RecordAgentRequestData"];
             };
         };
         responses: {
@@ -2710,7 +2719,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": (components["schemas"]["ChoiceQuestion"] | components["schemas"]["MatchQuestion"] | components["schemas"]["AssemblyQuestion"])[];
+                "application/json": components["schemas"]["RecordAgentRequestData"];
             };
         };
         responses: {

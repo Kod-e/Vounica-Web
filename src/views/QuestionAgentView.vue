@@ -55,7 +55,7 @@
                   {{ t('searchResource') }}
                 </div>
                 <p v-else class="text-sm text-gray-500">
-                  {{ event.data?.tool_name }}: {{ event.data?.tool_input }}
+                  {{ event.data?.tool_name }}: {{ event.data?.tool_data }}
                 </p>
               </div>
               <div v-else-if="event.type === 'result'">

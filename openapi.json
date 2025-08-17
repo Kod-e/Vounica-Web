@@ -2070,25 +2070,7 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "oneOf": [
-                    { "$ref": "#/components/schemas/ChoiceQuestion" },
-                    { "$ref": "#/components/schemas/MatchQuestion" },
-                    { "$ref": "#/components/schemas/AssemblyQuestion" }
-                  ],
-                  "discriminator": {
-                    "propertyName": "question_type",
-                    "mapping": {
-                      "choice": "#/components/schemas/ChoiceQuestion",
-                      "match": "#/components/schemas/MatchQuestion",
-                      "assembly": "#/components/schemas/AssemblyQuestion"
-                    }
-                  }
-                },
-                "title": "Questions"
-              }
+              "schema": { "$ref": "#/components/schemas/RecordAgentRequestData" }
             }
           }
         },
@@ -2154,25 +2136,7 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "oneOf": [
-                    { "$ref": "#/components/schemas/ChoiceQuestion" },
-                    { "$ref": "#/components/schemas/MatchQuestion" },
-                    { "$ref": "#/components/schemas/AssemblyQuestion" }
-                  ],
-                  "discriminator": {
-                    "propertyName": "question_type",
-                    "mapping": {
-                      "choice": "#/components/schemas/ChoiceQuestion",
-                      "match": "#/components/schemas/MatchQuestion",
-                      "assembly": "#/components/schemas/AssemblyQuestion"
-                    }
-                  }
-                },
-                "title": "Questions"
-              }
+              "schema": { "$ref": "#/components/schemas/RecordAgentRequestData" }
             }
           }
         },
@@ -2353,10 +2317,10 @@
       "AgentToolData": {
         "properties": {
           "tool_name": { "type": "string", "title": "Tool Name" },
-          "tool_input": { "type": "string", "title": "Tool Input" }
+          "tool_data": { "additionalProperties": true, "type": "object", "title": "Tool Data" }
         },
         "type": "object",
-        "required": ["tool_name", "tool_input"],
+        "required": ["tool_name", "tool_data"],
         "title": "AgentToolData"
       },
       "AssemblyQuestion": {
@@ -2509,8 +2473,14 @@
           "correct": { "type": "boolean", "title": "Correct" },
           "question": { "type": "string", "title": "Question" },
           "answer": { "type": "string", "title": "Answer" },
-          "correct_answer": { "type": "string", "title": "Correct Answer" },
-          "error_reason": { "type": "string", "title": "Error Reason" }
+          "correct_answer": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Correct Answer"
+          },
+          "error_reason": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Error Reason"
+          }
         },
         "type": "object",
         "required": ["correct", "question", "answer"],
@@ -2824,7 +2794,7 @@
       "RecordAgentEvent": {
         "oneOf": [
           { "$ref": "#/components/schemas/AgentMessageEvent" },
-          { "$ref": "#/components/schemas/RecordAgentResult" },
+          { "$ref": "#/components/schemas/RecordAgentResultEvent" },
           { "$ref": "#/components/schemas/AgentThinkingEvent" },
           { "$ref": "#/components/schemas/AgentStreamChunkEvent" },
           { "$ref": "#/components/schemas/AgentStreamEndEvent" },
@@ -2835,7 +2805,7 @@
           "propertyName": "type",
           "mapping": {
             "message": "#/components/schemas/AgentMessageEvent",
-            "result": "#/components/schemas/RecordAgentResult",
+            "result": "#/components/schemas/RecordAgentResultEvent",
             "stream_chunk": "#/components/schemas/AgentStreamChunkEvent",
             "stream_end": "#/components/schemas/AgentStreamEndEvent",
             "thinking": "#/components/schemas/AgentThinkingEvent",
@@ -2843,14 +2813,32 @@
           }
         }
       },
-      "RecordAgentResult": {
+      "RecordAgentRequestData": {
         "properties": {
-          "type": { "type": "string", "const": "result", "title": "Type", "default": "result" },
-          "data": { "$ref": "#/components/schemas/RecordAgentResultData" }
+          "questions": {
+            "items": {
+              "oneOf": [
+                { "$ref": "#/components/schemas/ChoiceQuestion" },
+                { "$ref": "#/components/schemas/MatchQuestion" },
+                { "$ref": "#/components/schemas/AssemblyQuestion" }
+              ],
+              "discriminator": {
+                "propertyName": "question_type",
+                "mapping": {
+                  "assembly": "#/components/schemas/AssemblyQuestion",
+                  "choice": "#/components/schemas/ChoiceQuestion",
+                  "match": "#/components/schemas/MatchQuestion"
+                }
+              }
+            },
+            "type": "array",
+            "title": "Questions"
+          },
+          "user_input": { "type": "string", "title": "User Input" }
         },
         "type": "object",
-        "required": ["data"],
-        "title": "RecordAgentResult"
+        "required": ["questions", "user_input"],
+        "title": "RecordAgentRequestData"
       },
       "RecordAgentResultData": {
         "properties": {
@@ -2864,6 +2852,15 @@
         "type": "object",
         "required": ["judge_results", "suggestion"],
         "title": "RecordAgentResultData"
+      },
+      "RecordAgentResultEvent": {
+        "properties": {
+          "type": { "type": "string", "const": "result", "title": "Type", "default": "result" },
+          "data": { "$ref": "#/components/schemas/RecordAgentResultData" }
+        },
+        "type": "object",
+        "required": ["data"],
+        "title": "RecordAgentResultEvent"
       },
       "RefreshResponseSchema": {
         "properties": { "access_token": { "type": "string", "title": "Access Token" } },
