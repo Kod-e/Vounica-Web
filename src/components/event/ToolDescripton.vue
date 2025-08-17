@@ -11,6 +11,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const { tool_name, tool_data } = defineProps<{
   tool_name: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   tool_data: any
 }>()
 const name = ref('')
