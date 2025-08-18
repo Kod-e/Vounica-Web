@@ -51,5 +51,17 @@
   "matchQuestion": "Match Question",
   "assemblyQuestion": "Assembly Question",
   "vectorSearch": "Vector Search",
-  "textSearch": "Text Search"
+  "textSearch": "Text Search",
+
+  "signInTitle": "Sign in to your account",
+  "createAccountTitle": "Create your account",
+  "switchToRegister": "Switch to register",
+  "switchToLogin": "Switch to login",
+  "password": "Password",
+  "signIn": "Sign in",
+  "createAccount": "Create account",
+  "signingIn": "Signing in...",
+  "creating": "Creating...",
+  "loginFailed": "Login failed",
+  "registerFailed": "Register failed"
 }

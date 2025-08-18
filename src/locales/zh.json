@@ -53,5 +53,17 @@
   "matchQuestion": "匹配题",
   "assemblyQuestion": "拼词题",
   "vectorSearch": "语意相似搜索",
-  "textSearch": "文本匹配搜索"
+  "textSearch": "文本匹配搜索",
+
+  "signInTitle": "登录你的账户",
+  "createAccountTitle": "创建你的账户",
+  "switchToRegister": "切换到注册",
+  "switchToLogin": "切换到登录",
+  "password": "密码",
+  "signIn": "登录",
+  "createAccount": "创建账户",
+  "signingIn": "登录中...",
+  "creating": "创建中...",
+  "loginFailed": "登录失败",
+  "registerFailed": "注册失败"
 }

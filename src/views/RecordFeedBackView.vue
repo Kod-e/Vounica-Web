@@ -28,7 +28,7 @@
     <div class="mt-8">
       <button
         type="button"
-        class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-white text-sm font-semibold hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-white text-sm font-semibold hover:bg-indigo-500 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         @click="onFinish"
       >
         {{ t('finish') }}

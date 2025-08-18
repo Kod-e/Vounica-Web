@@ -51,5 +51,17 @@
   "matchQuestion": "マッチング問題",
   "assemblyQuestion": "パズル問題",
   "vectorSearch": "意味的類似検索",
-  "textSearch": "テキスト一致検索"
+  "textSearch": "テキスト一致検索",
+
+  "signInTitle": "アカウントにサインイン",
+  "createAccountTitle": "アカウントを作成",
+  "switchToRegister": "登録へ切り替え",
+  "switchToLogin": "ログインへ切り替え",
+  "password": "パスワード",
+  "signIn": "サインイン",
+  "createAccount": "アカウントを作成",
+  "signingIn": "サインイン中…",
+  "creating": "作成中…",
+  "loginFailed": "ログインに失敗しました",
+  "registerFailed": "登録に失敗しました"
 }
