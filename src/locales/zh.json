@@ -67,6 +67,7 @@
   "loginFailed": "登录失败",
   "registerFailed": "注册失败",
   "registerLogin": "注册/登录",
+  "tokenQuota": "Token 配额",
 
   "content": "内容",
   "newCategory": "新建分类",

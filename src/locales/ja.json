@@ -67,6 +67,7 @@
   "loginFailed": "ログインに失敗しました",
   "registerFailed": "登録に失敗しました",
   "registerLogin": "登録/ログイン",
+  "tokenQuota": "トークン配額",
 
   "content": "内容",
   "newCategory": "新規カテゴリ",

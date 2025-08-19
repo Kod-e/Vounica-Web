@@ -12,9 +12,11 @@
         </div>
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
           <dt class="text-sm/6 font-medium text-gray-900">{{ $t('email') }}</dt>
-          <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
-            {{ email }}
-          </dd>
+          <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">{{ email }}</dd>
+        </div>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm/6 font-medium text-gray-900">{{ $t('tokenQuota') }}</dt>
+          <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">{{ tokenQuota }}</dd>
         </div>
       </dl>
       <div class="mt-10">
@@ -43,7 +45,7 @@ const userStore = useUserStore()
 
 const name = computed(() => userStore.name)
 const email = computed(() => userStore.email)
-
+const tokenQuota = computed(() => userStore.tokenQuota)
 const isGuestEmail = computed(() => (email.value ?? '').startsWith('guest'))
 
 const toRegisterOrLogin = () => {

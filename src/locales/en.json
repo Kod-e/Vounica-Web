@@ -67,7 +67,7 @@
   "loginFailed": "Login failed",
   "registerFailed": "Register failed",
   "registerLogin": "Register / Login",
-
+  "tokenQuota": "Token Quota",
   "content": "Content",
   "newCategory": "New Category",
   "inputNewCategory": "Input new category",
