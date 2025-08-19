@@ -5,6 +5,15 @@
         <h1 class="text-base font-semibold leading-6 text-gray-900">{{ t('story') }}</h1>
         <p class="mt-2 text-sm text-gray-700">{{ t('storyViewDescription') }}</p>
       </div>
+      <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+        <button
+          type="button"
+          class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          @click="openCreate = true"
+        >
+          {{ t('addStory') }}
+        </button>
+      </div>
     </div>
 
     <div v-if="storyStore.categories.length === 0" class="mt-8">
@@ -82,23 +91,36 @@
         {{ storyStore.isLoading ? 'Loading...' : t('nextPage') }}
       </button>
     </div>
+
+    <StoryCreateOver
+      :open="openCreate"
+      :tabs="tabs"
+      @close="openCreate = false"
+      @confirm="onCreate"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { storyController } from '@/controller/story'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import StoryCreateOver from '@/components/StoryCreateOver.vue'
 
 const { t } = useI18n()
 
 const storyStore = storyController()
 const tabs = computed(() => storyStore.categories.map((category) => ({ name: category })))
+const openCreate = ref(false)
 
 onMounted(() => {
-  // storyStore.fetchCategories()
-  storyStore.setFakeCategories()
+  storyStore.fetchCategories()
 })
 
 const stories = computed(() => storyStore.stories)
+
+async function onCreate(payload: { content: string; category: string }) {
+  await storyStore.createStory(payload.content, payload.category)
+  openCreate.value = false
+}
 </script>

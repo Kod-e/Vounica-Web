@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import type { components } from '@/types/api'
 import { fetchStoryCategories, fetchStoryByCategory } from '@/service/story'
+import { addStory as addStoryApi } from '@/service/story'
 
 export const storyController = defineStore('story', {
   state: () => ({
@@ -48,6 +49,24 @@ export const storyController = defineStore('story', {
       if (this.offset - this.limit < 0) return
       this.offset -= this.limit
       this.fetchStoriesByCategory()
+    },
+    async createStory(content: string, category: string) {
+      if (!content?.trim()) return
+      const normalizedCategory = category?.trim()
+      if (!normalizedCategory) return
+      this.isLoading = true
+      try {
+        const created = await addStoryApi(content.trim(), normalizedCategory)
+        if (!this.categories.includes(normalizedCategory)) {
+          this.categories.push(normalizedCategory)
+        }
+        this.selectedCategory = normalizedCategory
+        this.offset = 0
+        await this.fetchStoriesByCategory()
+        return created
+      } finally {
+        this.isLoading = false
+      }
     },
   },
 })
