@@ -65,10 +65,10 @@
         <button
           type="button"
           class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          :disabled="submitting || !content.trim() || !computedCategory"
+          :disabled="loading || !content.trim() || !computedCategory"
           @click="onConfirm"
         >
-          {{ submitting ? t('creating') : t('confirm') }}
+          {{ loading ? t('creating') : t('confirm') }}
         </button>
       </div>
     </div>
@@ -83,6 +83,7 @@ import { useI18n } from 'vue-i18n'
 const props = defineProps<{
   open: boolean
   tabs: { name: string }[]
+  loading?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -96,7 +97,6 @@ const NEW_CATEGORY_VALUE = '__NEW__'
 const content = ref('')
 const selectedTab = ref<string | null>(null)
 const newCategory = ref('')
-const submitting = ref(false)
 
 watch(
   () => props.open,
@@ -105,10 +105,11 @@ watch(
       content.value = ''
       selectedTab.value = props.tabs?.[0]?.name ?? null
       newCategory.value = ''
-      submitting.value = false
     }
   },
 )
+
+const loading = computed(() => !!props.loading)
 
 const computedCategory = computed(() => {
   if (selectedTab.value === NEW_CATEGORY_VALUE) return newCategory.value.trim()
@@ -119,15 +120,10 @@ function onClose() {
   emit('close')
 }
 
-async function onConfirm() {
-  if (submitting.value) return
+function onConfirm() {
+  if (loading.value) return
   const category = computedCategory.value
   if (!content.value.trim() || !category) return
-  try {
-    submitting.value = true
-    emit('confirm', { content: content.value.trim(), category })
-  } finally {
-    submitting.value = false
-  }
+  emit('confirm', { content: content.value.trim(), category })
 }
 </script>

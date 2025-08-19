@@ -95,6 +95,7 @@
     <StoryCreateOver
       :open="openCreate"
       :tabs="tabs"
+      :loading="storyStore.isLoading"
       @close="openCreate = false"
       @confirm="onCreate"
     />
@@ -120,7 +121,10 @@ onMounted(() => {
 const stories = computed(() => storyStore.stories)
 
 async function onCreate(payload: { content: string; category: string }) {
-  await storyStore.createStory(payload.content, payload.category)
-  openCreate.value = false
+  try {
+    await storyStore.createStory(payload.content, payload.category)
+  } finally {
+    openCreate.value = false
+  }
 }
 </script>
