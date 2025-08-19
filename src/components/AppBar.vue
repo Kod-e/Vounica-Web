@@ -329,8 +329,5 @@ function selectTargetLang(code: string) {
   langStore.setTargetLanguage(code)
 }
 
-const userNavigation = computed(() => [
-  { name: t('profile'), href: '/user' },
-  { name: t('signOut'), href: '#' },
-])
+const userNavigation = computed(() => [{ name: t('profile'), href: '/user' }])
 </script>
