@@ -72,5 +72,8 @@
   "newCategory": "新規カテゴリ",
   "inputNewCategory": "新しいカテゴリを入力",
   "cancel": "キャンセル",
-  "confirm": "確認"
+  "confirm": "確認",
+
+  "networkOffline": "ネットワークに接続されていません。接続を確認してください",
+  "networkConnectFailed": "サーバーに接続できません。しばらくしてから再試行してください"
 }

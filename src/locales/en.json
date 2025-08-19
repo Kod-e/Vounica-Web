@@ -72,5 +72,8 @@
   "newCategory": "New Category",
   "inputNewCategory": "Input new category",
   "cancel": "Cancel",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+
+  "networkOffline": "Network is offline. Please check your connection",
+  "networkConnectFailed": "Failed to reach the server. Please try again later"
 }
