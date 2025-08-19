@@ -63,5 +63,6 @@
   "signingIn": "Signing in...",
   "creating": "Creating...",
   "loginFailed": "Login failed",
-  "registerFailed": "Register failed"
+  "registerFailed": "Register failed",
+  "registerLogin": "Register/Login"
 }

@@ -65,5 +65,6 @@
   "signingIn": "登录中...",
   "creating": "创建中...",
   "loginFailed": "登录失败",
-  "registerFailed": "注册失败"
+  "registerFailed": "注册失败",
+  "registerLogin": "注册/登录"
 }

@@ -63,5 +63,6 @@
   "signingIn": "サインイン中…",
   "creating": "作成中…",
   "loginFailed": "ログインに失敗しました",
-  "registerFailed": "登録に失敗しました"
+  "registerFailed": "登録に失敗しました",
+  "registerLogin": "登録/ログイン"
 }

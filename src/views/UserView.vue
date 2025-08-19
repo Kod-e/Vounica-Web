@@ -17,6 +17,17 @@
           </dd>
         </div>
       </dl>
+      <div class="mt-10">
+        <dd v-if="isGuestEmail" class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
+          <button
+            type="button"
+            @click="toRegisterOrLogin"
+            class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            {{ $t('registerLogin') }}
+          </button>
+        </dd>
+      </div>
     </div>
   </div>
 </template>
@@ -24,9 +35,18 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const userStore = useUserStore()
 
 const name = computed(() => userStore.name)
 const email = computed(() => userStore.email)
+
+const isGuestEmail = computed(() => (email.value ?? '').startsWith('guest'))
+
+const toRegisterOrLogin = () => {
+  router.push('/login')
+}
 </script>
