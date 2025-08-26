@@ -9,9 +9,18 @@
         name="questionAgentCommand"
         id="questionAgent"
         v-model="userInput"
-        @keydown.enter.prevent="questionAgent.start(userInput)"
+        @keydown.enter.prevent="onEnterKey"
         class="block w-full rounded-md border-0 px-2 py-1.5 pr-14 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
       />
+      <div class="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
+        <button
+          type="button"
+          @click="submit"
+          class="inline-flex items-center rounded px-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700 focus:outline-none"
+        >
+          {{ t('submit') }}
+        </button>
+      </div>
     </div>
   </div>
   <div v-else class="flow-root">
@@ -118,5 +127,18 @@ const getIcon = (type: string) => {
   if (type === 'tool_call') return WrenchIcon
   if (type === 'result') return CheckIcon
   return CircleStackIcon
+}
+
+const submit = () => {
+  if (userInput.value.trim().length === 0) return
+  questionAgent.start(userInput.value)
+}
+
+const onEnterKey = (e: KeyboardEvent) => {
+  const event = e as KeyboardEvent
+  if (event.metaKey || event.ctrlKey) {
+    e.preventDefault()
+    submit()
+  }
 }
 </script>
