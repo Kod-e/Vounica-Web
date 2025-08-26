@@ -69,6 +69,8 @@ export const questionAgentController = defineStore('questionAgent', {
             questionController().is_open = true
             questionController().user_input = userInput
           }
+          // 结束运行，恢复到初始输入界面
+          this.$reset()
         }
       })
     },

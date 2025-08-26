@@ -14,11 +14,11 @@ export const useNotifyStore = defineStore('notify', {
     addNotify(notify: string) {
       this.notify.push(notify)
     },
-    deleteNotify(index: number) {
-      this.notify.splice(index, 1)
-    },
     deleteNotifyByContent(content: string) {
-      this.notify = this.notify.filter((notify) => notify !== content)
+      const index = this.notify.indexOf(content)
+      if (index !== -1) {
+        this.notify.splice(index, 1)
+      }
     },
     clearNotify() {
       this.notify = []

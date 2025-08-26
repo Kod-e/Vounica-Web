@@ -71,6 +71,7 @@ export const recordAgentController = defineStore('recordAgent', {
               questionController().suggestion = resultData.suggestion
               questionController().finish_evaluating()
             }
+            this.$reset()
           }
         },
         userInput,

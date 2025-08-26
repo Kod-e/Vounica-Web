@@ -51,11 +51,6 @@ const hasNotify = computed(() => notifyStore.hasNotify)
 const notifyThree = computed(() => notifyStore.notifyThree)
 
 function onClose(message: string) {
-  const indexInQueue = notifyStore.notify.indexOf(message)
-  if (indexInQueue !== -1) {
-    notifyStore.deleteNotify(indexInQueue)
-  } else {
-    notifyStore.deleteNotifyByContent(message)
-  }
+  notifyStore.deleteNotifyByContent(message)
 }
 </script>
