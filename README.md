@@ -37,9 +37,11 @@ npm run build
 
 - Dist Path ./dist
 - Dev Acccess
+
 ```bash
 npm run dev
 ```
+
 ## 使用している技術
 
 ### frontend：Vue 3 + Pinia + OpenAPI Fetch
@@ -47,13 +49,13 @@ npm run dev
 - Vue3 + Pinia を使うと、UI は data を管理せず、ただ表示するだけです。imperative な code はほとんど不要です。
 - backend の FastAPI が出す OpenAPI schema をそのまま使えるので、frontend で model を作り直す必要はありません。
 
-## アーキテクチャ図 (Backend)
+## アーキテクチャ図 (Frontend)
 
 Vounicaのバックエンドは以下のような構成になっています。  
 Core → Infra → Service → API の4層に分かれ、それぞれが明確に役割を持っています。
 
 <p align="center">
-  <img src="https://static.vounica.com/image/backend.webp" alt="Backend" width="600"/>
+  <img src="https://static.vounica.com/image/frontend.webp" alt="Frontend" width="600"/>
 </p>
 
 ---
