@@ -25,8 +25,8 @@ export async function runQuestionAgentStream(
 
   const url = new URL('/v1/question/agent/question/ws', baseUrl)
   if (token) url.searchParams.set('token', token)
-  if (acceptLanguage) url.searchParams.set('accept_language', acceptLanguage)
-  if (targetLanguage) url.searchParams.set('target_language', targetLanguage)
+  if (acceptLanguage) url.searchParams.set('accept-language', acceptLanguage)
+  if (targetLanguage) url.searchParams.set('target-language', targetLanguage)
 
   const ws = new WebSocket(url.toString())
 

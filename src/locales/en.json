@@ -75,5 +75,7 @@
   "confirm": "Confirm",
 
   "networkOffline": "Network is offline. Please check your connection",
-  "networkConnectFailed": "Failed to reach the server. Please try again later"
+  "networkConnectFailed": "Failed to reach the server. Please try again later",
+  "your_answer": "Your answer",
+  "word_bank": "Word Bank"
 }

@@ -76,5 +76,7 @@
   "confirm": "确定",
 
   "networkOffline": "网络未连接，请检查网络设置",
-  "networkConnectFailed": "连接服务器失败，请稍后重试"
+  "networkConnectFailed": "连接服务器失败，请稍后重试",
+  "your_answer": "你的回答",
+  "word_bank": "词汇库"
 }

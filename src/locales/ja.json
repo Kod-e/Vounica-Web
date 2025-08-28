@@ -76,5 +76,7 @@
   "confirm": "確認",
 
   "networkOffline": "ネットワークに接続されていません。接続を確認してください",
-  "networkConnectFailed": "サーバーに接続できません。しばらくしてから再試行してください"
+  "networkConnectFailed": "サーバーに接続できません。しばらくしてから再試行してください",
+  "your_answer": "あなたの回答",
+  "word_bank": "語彙バンク"
 }
