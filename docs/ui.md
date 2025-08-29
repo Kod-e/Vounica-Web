@@ -204,3 +204,74 @@ function onSubmit() {
 ```
 
 このように、処理はすべて View 内で閉じていて、問題単位で自己完結しています。
+
+## Story & Mistake & Memory & Vocab & Grammar の View
+
+ここでは **Story** を例にします。  
+分類がある View（Story / Memory）は **タブ + カテゴリ** が増えるだけで、他はとても単純です。  
+基本は Controller の関数を呼ぶだけ（取得・前へ・次へ）で、現在ページの内容を列で表示します。  
+私はこの作りが分かりやすく、同じ型で他の View にも広げやすいと思いました。
+
+### 例：Story View（カテゴリ付き）
+
+- 初期化で `fetchCategories()` を呼ぶ  
+- 画面上部は **タブ**（`selectedCategory` を切替）  
+- 本文は `stories` を `v-for` で並べる  
+- 下部は **前へ / 次へ** ボタン（`prevPage()` / `nextPage()`）
+
+``vue
+<!-- タブ（PC） -->
+<nav class="-mb-px flex space-x-8" aria-label="Tabs">
+  <a
+    v-for="tab in tabs"
+    :key="tab.name"
+    @click="storyStore.selectCategory(tab.name)"
+    :class="tab.name === storyStore.selectedCategory ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'"
+    class="whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium"
+  >{{ tab.name }}</a>
+</nav>
+``
+
+``vue
+<!-- 一覧表示 -->
+<ul role="list" class="divide-y divide-gray-100">
+  <li v-for="story in stories" :key="story.id!" class="py-5">
+    <p class="text-sm/6 text-gray-900 break-all">{{ story.content }}</p>
+    <div class="mt-2 flex items-center justify-between">
+      <p class="text-xs/5 text-gray-500">{{ t('summary') }}: {{ story.summary }}</p>
+      <p class="text-xs/5 text-gray-500">
+        {{ t('updated_at') }} <time :datetime="story.updated_at">{{ story.updated_at }}</time>
+      </p>
+    </div>
+  </li>
+</ul>
+``
+
+``vue
+<!-- ページ操作 -->
+<div class="mt-8 flex justify-between">
+  <button @click="storyStore.prevPage()">
+    {{ storyStore.isLoading ? 'Loading...' : t('prevPage') }}
+  </button>
+  <button @click="storyStore.nextPage()">
+    {{ storyStore.isLoading ? 'Loading...' : t('nextPage') }}
+  </button>
+</div>
+``
+
+``ts
+// 最小の初期化（setup）
+const storyStore = storyController()
+onMounted(() => { storyStore.fetchCategories() })
+const tabs = computed(() => storyStore.categories.map((c) => ({ name: c })))
+const stories = computed(() => storyStore.stories)
+``
+
+### 他 View との違い
+
+- **Memory**：Story と同じく **タブ + カテゴリ** を持つ（関数名だけ異なる）  
+- **Mistake / Vocab / Grammar**：カテゴリがないぶん、**タブ部分が無い**。  
+  → 取得（`fetchXxx`）、前へ（`prevPage`）、次へ（`nextPage`）をそのまま呼ぶだけ。  
+  → 本文は現在ページの配列を `v-for` で並べるだけ。
+
+このように、**型（型式）は全て同じ** にしているので、読む側も作る側も迷いません。
