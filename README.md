@@ -44,7 +44,7 @@ npm run dev
 
 ## 使用している技術
 
-### frontend：Vue 3 + Pinia + OpenAPI Fetch
+### フロントエンド：Vue 3 + Pinia + OpenAPI Fetch
 
 - Vue3 + Pinia を使うと、UI は data を管理せず、ただ表示するだけです。imperative な code はほとんど不要です。
 - backend の FastAPI が出す OpenAPI schema をそのまま使えるので、frontend で model を作り直す必要はありません。
