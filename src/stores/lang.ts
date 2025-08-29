@@ -2,17 +2,34 @@ import { defineStore } from 'pinia'
 import { i18n } from '@/plugins/i18n'
 
 export const useLangStore = defineStore('lang', {
-  state: () => ({
-    acceptLanguage: 'en',
-    targetLanguage: 'ja',
-  }),
+  state: () => {
+    // Initialize from detected UI locale (set in i18n.ts)
+    const system = (i18n.global.locale.value as string) || 'en'
+    const accept = system
+    // Rule: if system language is not English, target is English; otherwise target is Japanese
+    const target = system !== 'en' ? 'en' : 'ja'
+
+    return {
+      acceptLanguage: accept,
+      targetLanguage: target,
+    }
+  },
   actions: {
     setAcceptLanguage(lang: string) {
       this.acceptLanguage = lang
       i18n.global.locale.value = lang // 实时切换 UI 语言
+      // Prevent accept/target from being identical; apply rule for target fallback
+      if (this.targetLanguage === this.acceptLanguage) {
+        this.targetLanguage = this.acceptLanguage === 'en' ? 'ja' : 'en'
+      }
     },
     setTargetLanguage(lang: string) {
-      this.targetLanguage = lang
+      // Prevent accept/target from being identical; if same, choose fallback by rule
+      if (lang === this.acceptLanguage) {
+        this.targetLanguage = this.acceptLanguage === 'en' ? 'ja' : 'en'
+      } else {
+        this.targetLanguage = lang
+      }
     },
   },
 
