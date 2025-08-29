@@ -49,7 +49,7 @@ UI は大きく三つのレイヤーに分けています：
 上から下への `v-for` だけで時系列に表示できます。受信トークンをそのまま積むことで、進捗のような見え方になります。  
 種類ごとに絵文字（またはアイコン）を付けて区別します。`ToolDescription` は複雑な tool call を読みやすい文字列に変換します（未対応のものは一時的に生 JSON を出します）。
 
-``vue
+```vue
 <div v-for="(event, i) in questionAgent.events" :key="i">
   <div class="relative pb-8">
     <span
@@ -94,7 +94,7 @@ UI は大きく三つのレイヤーに分けています：
     </div>
   </div>
 </div>
-``
+```
 
 `controller.isStreaming` は「今ストリーム受信中」を表します。  
 この間は `streamText` にトークンを順次つなげ、最下部にだけ表示します。  
