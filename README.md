@@ -29,7 +29,7 @@ cd Vounica-Web
 ### 3. Build
 
 ```bash
-npm run install
+npm install
 npm run build
 ```
 
