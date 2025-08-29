@@ -65,6 +65,7 @@
                   </MenuItems>
                 </transition>
               </Menu>
+              <ArrowRightIcon aria-hidden="true" class="size-4 text-gray-400" />
 
               <!-- Target language dropdown -->
               <Menu as="div" class="relative">
@@ -169,6 +170,8 @@
                 </MenuItems>
               </transition>
             </Menu>
+
+            <ArrowRightIcon aria-hidden="true" class="size-4 text-gray-400" />
 
             <Menu as="div" class="relative">
               <MenuButton
@@ -284,7 +287,7 @@ import {
   MenuItem,
 } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon, UserIcon } from '@heroicons/vue/24/outline'
-import { ChevronDownIcon } from '@heroicons/vue/20/solid'
+import { ChevronDownIcon, ArrowRightIcon } from '@heroicons/vue/20/solid'
 import { computed, onMounted } from 'vue'
 import { useLangStore } from '@/stores/lang'
 import { i18n } from '@/plugins/i18n'
