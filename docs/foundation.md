@@ -5,3 +5,10 @@ OpenAPI Fetch, Auth, JWT認証Token注入, 初期化, API Handler をここで�
 上の Store, Controller, Viewは、この foundation を使って動きます。
 
 
+## OpenAPI Fetch Client作成
+
+## OpenAPI Fetch Handler作成
+
+## 言語設定
+
+## 初期化
