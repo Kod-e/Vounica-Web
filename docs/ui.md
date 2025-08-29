@@ -148,3 +148,59 @@ controller は問題の進行を管理する **有限状態の流れ** です。
   `RecordFeedBackView` を表示して、記録と問題の結果をまとめて見せます。
 
 私はこの切替が単純で分かりやすいと思いました。UI は状態を見るだけで、余計な処理を持ちません。
+
+## Choice & Assembly & Match View
+
+この3つの View だけは、答えの判定ロジックをページ内に直接持っています。  
+本来は「UIはロジックを持たない」という方針ですが、ここは **一問ごとの判定** なのでシンプルに書いた方が分かりやすいと考えました。  
+状態は全局ではなく、その場の reactive state にだけ保持しています。
+
+### Choice
+選択した答えを保存し、submit 時に正答と比較します。
+
+```ts
+function onSelect(option: string) {
+  controller.status = 'answered'
+  question.value.answer = option
+}
+function onSubmit() {
+  if (question.value.answer === question.value.correct_answer) {
+    controller.correct()
+  } else {
+    controller.incorrect()
+  }
+}
+```
+
+### Assembly
+単語の bank と answer を行き来させ、最後に正規化して判定します。
+
+```ts
+function moveToAnswer(i: number) {
+  answer.value.push(bank.value.splice(i, 1)[0])
+}
+function onSubmit() {
+  const norm = (t: string[]) => t.join(' ').toLowerCase().replace(/\s+/g, ' ').trim()
+  controller[join(norm(answer.value) === norm(question.value.correct_answer) ? 'correct' : 'incorrect')]()
+}
+```
+
+### Match
+左右のペアを作って保存し、submit 時に正答と比較します。
+
+```ts
+function updateAnswerAndStatus() {
+  question.value.answer = question.value.left_options
+    .filter((l) => pairs[l])
+    .map((l) => [l, pairs[l]])
+  controller.status = question.value.answer.length === question.value.left_options.length ? 'answered' : 'presenting'
+}
+function onSubmit() {
+  const corr = question.value.correct_answer
+  const ans = question.value.answer
+  const isSame = ans.length === corr.length && ans.every((p, i) => p[1] === corr[i][1])
+  controller[isSame ? 'correct' : 'incorrect']()
+}
+```
+
+このように、処理はすべて View 内で閉じていて、問題単位で自己完結しています。
