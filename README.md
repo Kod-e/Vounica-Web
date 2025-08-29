@@ -62,6 +62,34 @@ Core → Infra → Service → API の4層に分かれ、それぞれが明確�
 
 ## プロジェクト構成
 
+本プロジェクトの backend は **Core → Infra → Service → API** の4層構造で作られています。  
+すべて async 対応の code で書かれており、保守しやすいように設計しました。  
+詳しい内容は docs/ 以下のファイルをご覧ください。
+
+### Foundation
+- [docs/foundation.md](docs/foundation.md)  
+フロントの基盤まとめ。
+- OpenAPI クライアント作成（openapi-fetch）
+- 認証Token 注入 / Accept-Language & Taragt-Language / 共通Error Handler
+- 環境設定（dev / prod の API Base URL）
+- i18n 初期化、router 初期化
+- 401 のリカバリー（guest token 再取得など）
+
+### State
+- [docs/state.md](docs/state.md)  
+Pinia による状態 & ロジック（Controller）の設計。
+- 命名：questionController, recordAgentController, authStore, notifyStore など
+- 状態（例：学習の進行、現在の問題、回答履歴）と アクション（start(), next(), correct(), evaluating() など）
+- API 呼び出しは Controller 内で一元化（REST / WS）
+- Store 間の連携（Question → Record → Question のループ）
+
+### UI
+- [docs/ui.md](docs/ui.md)  
+ページと部品の構成。
+- Route設計（例：/ Home、/learn Question、/profile など）
+- NofityOver, Question View
+- グローバル UI（通知バーやトーストなど）
+
 ## ScreenShots
 
 ### Question Agent 冷スタート
