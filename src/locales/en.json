@@ -77,5 +77,11 @@
   "networkOffline": "Network is offline. Please check your connection",
   "networkConnectFailed": "Failed to reach the server. Please try again later",
   "your_answer": "Your answer",
-  "word_bank": "Word Bank"
+  "word_bank": "Word Bank",
+
+  "q1": "Give me 6 questions that I might be interested in",
+  "q2": "I'm interested in generative AI. Give me 6 questions related to it",
+  "q3": "I'm a beginner. Give me 6 easy questions",
+  "q4": "I'm just starting to use this software. I want to create a 6-question test from easy to difficult",
+  "suggestion": "Suggestion"
 }

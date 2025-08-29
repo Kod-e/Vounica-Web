@@ -1,5 +1,6 @@
 <template>
   <div v-if="!questionAgent.running">
+
     <label for="questionAgentCommand" class="block text-sm font-medium leading-6 text-gray-900">{{
       t('questionAgentCommand')
     }}</label>
@@ -22,6 +23,44 @@
         </button>
       </div>
     </div>
+    <label for="suggestion" class="block mt-5 text-md font-medium leading-6 text-gray-900">{{
+      t('suggestion')
+    }}</label>
+    <ul
+      class="mt-5 w-full divide-y divide-gray-200 rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow"
+      role="list"
+    >
+      <li>
+        <button
+          type="button"
+          class="w-full px-3 py-2 text-left hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600"
+          @click="submitQ1"
+        >
+          {{ t('q1') }}
+        </button>
+        <button
+          type="button"
+          class="w-full px-3 py-2 text-left hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600"
+          @click="submitQ2"
+        >
+          {{ t('q2') }}
+        </button>
+        <button
+          type="button"
+          class="w-full px-3 py-2 text-left hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600"
+          @click="submitQ3"
+        >
+          {{ t('q3') }}
+        </button>
+        <button
+          type="button"
+          class="w-full px-3 py-2 text-left hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600"
+          @click="submitQ4"
+        >
+          {{ t('q4') }}
+        </button>
+      </li>
+    </ul>
   </div>
   <div v-else class="flow-root">
     <ul role="list" class="-mb-8">
@@ -132,6 +171,22 @@ const getIcon = (type: string) => {
 const submit = () => {
   if (userInput.value.trim().length === 0) return
   questionAgent.start(userInput.value)
+}
+
+const submitQ1 = () => {
+  questionAgent.start(t('q1'))
+}
+
+const submitQ2 = () => {
+  questionAgent.start(t('q2'))
+}
+
+const submitQ3 = () => {
+  questionAgent.start(t('q3'))
+}
+
+const submitQ4 = () => {
+  questionAgent.start(t('q4'))
 }
 
 const onEnterKey = (e: KeyboardEvent) => {
