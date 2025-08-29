@@ -28,7 +28,147 @@ export const apiBase = import.meta.env.VITE_API_BASE_URL
 
 これにより、未ログイン時とログイン後で処理を分けつつ、どちらも OpenAPI 由来の型を利用して安全に API 呼び出しができます。
 ## OpenAPI Fetch Handler作成
+**目的**：認証まわり（token取得・自動更新・セッション切替）と、  
+共通ヘッダー／通知処理を **openapi-fetch のハンドラ** で一元化します。  
+ここでは `src/plugins/apiAuth.ts` に token 更新ロジックをまとめ、`api.ts` の `api.use(...)` で  
+言語ヘッダー付与・401時の処理・ネットワーク例外の通知を行います。
 
+- **JWT 期限の事前判定**：access token を簡単に decode して、**残り6時間未満なら refresh**。  
+- **単発更新（シングルフライト）**：`refreshInFlight` で同時多発の refresh を抑止。  
+- **失敗時フォールバック**：refresh 失敗なら **Guest 認証** に切替。  
+- **bindAuth**：`getToken / onAuthLost` を `api.ts` の interceptor に注入。  
+- **言語ヘッダー**：`Accept-Language / Target-Language` を毎リクエストに付与。  
+- **通知**：API エラー本文の `message` を拾って `Notify` に表示。  
+- **onError**：ネットワーク断などの非HTTP例外は i18n 文言で通知。
+
+```ts
+// src/plugins/apiAuth.ts
+import { bindAuth } from '@/lib/api'
+import { useAuthStore } from '@/stores/auth'
+import { authGuest, authRefresh } from '@/lib/authClient'
+import { jwtDecode } from 'jwt-decode'
+
+let refreshInFlight: Promise<void> | null = null
+
+// refresh token を使って、access token を一回だけ更新する（同時実行を防ぐ）
+function refreshOnce(): Promise<void> {
+  if (refreshInFlight) return refreshInFlight
+  const s = useAuthStore()
+  refreshInFlight = (async () => {
+    if (!s.refreshToken) throw new Error('NO_REFRESH_TOKEN')
+    const { access_token } = await authRefresh({ refresh_token: s.refreshToken })
+    s.setTokens(access_token, s.refreshToken) // 成功：新しい access を保存
+  })().finally(() => {
+    refreshInFlight = null // 終わったらロック解除
+  })
+  return refreshInFlight
+}
+
+// アプリ起動時に一度だけ呼び出す：token取得と失効時の動作を api に注入
+export function installApiAuth() {
+  bindAuth({
+    async getToken() {
+      const s = useAuthStore()
+      if (s.accessToken !== '') {
+        // JWT を軽く展開して有効期限を確認。残り6時間以上あればそのまま使う
+        const decoded = jwtDecode<{ exp: number }>(s.accessToken)
+        const now = Date.now()
+        const exp = decoded.exp! * 1000
+        if (now < exp - 6 * 60 * 60 * 1000) {
+          return s.accessToken
+        }
+        // 残りが少ない：更新を試みる。失敗したら Guest に切替
+        try {
+          await refreshOnce()
+        } catch {
+          s.clear()
+          const { access_token, refresh_token } = await authGuest()
+          s.setTokens(access_token, refresh_token)
+        }
+        return s.accessToken
+      }
+      // access が無い：Guest を取得
+      const { access_token, refresh_token } = await authGuest()
+      s.setTokens(access_token, refresh_token)
+      return s.accessToken
+    },
+    async onAuthLost() {
+      // 401 などで現セッションが無効になった時の処理：Guest に切替
+      const s = useAuthStore()
+      s.clear()
+      const { access_token, refresh_token } = await authGuest()
+      s.setTokens(access_token, refresh_token)
+    },
+  })
+}
+// main.ts 側：app.use(installApiAuth) で一度だけ初期化
+```
+ただ、正直に言うと開発中は「とりあえず動くこと」を優先して、  
+この handler を plugin として分離せず、`api.ts` に直接書いてしまったこともあります。  
+そのまま便利だったので後で直さずに残ってしまいました（私の問題です）。  
+言語ヘッダーの付与なども、結局 `api.use(...)` 内にまとめて書いたりしました。  
+結果として「設計のきれいさ」と「実装の手軽さ」のどちらを取るかで揺れています。
+```ts
+// src/lib/api.ts（抜粋：request/response/error ハンドラ）
+// - リクエスト毎に Authorization と言語ヘッダーを付与
+// - エラーボディの message を通知に出す
+// - 401 は onAuthLost を呼んで Guest に切替
+// - ネットワーク系の失敗は i18n 文言で通知
+
+api.use({
+  async onRequest({ request }: { request: Request }) {
+    if (!handlers) return request
+    const token = await handlers.getToken()
+    if (!token) return request
+    const headers = new Headers(request.headers)
+    const langStore = useLangStore()
+    headers.set('Authorization', `Bearer ${token}`)
+    headers.set('Accept-Language', langStore.acceptLanguage) // UI 表示の言語
+    headers.set('Target-Language', langStore.targetLanguage) // 学習ターゲットの言語
+    return new Request(request, { headers })
+  },
+  async onResponse({ response }: { response: Response }) {
+    // 200/201 は成功としてそのまま返す
+    if (response.status === 200 || response.status === 201) return response
+
+    const notifyStore = useNotifyStore()
+    // エラー本文に message があれば通知に出す（無ければ statusText）
+    try {
+      const data = await response.json()
+      if ((data as { message?: string }).message) {
+        notifyStore.addNotify((data as { message: string }).message)
+      }
+    } catch {
+      notifyStore.addNotify(response.statusText)
+    }
+
+    // 401：セッション無効 → Guest に切替
+    if (response.status === 401 && handlers) {
+      await handlers.onAuthLost()
+      return response
+    }
+    throw response
+  },
+})
+
+api.use({
+  onError({ error }: { error: unknown }) {
+    // HTTP レスポンス系は上の onResponse で処理済み
+    if (error instanceof Response) {
+      throw error
+    }
+    // ネットワーク断・CORS・DNS 失敗など
+    const notifyStore = useNotifyStore()
+    const isOffline = typeof navigator !== 'undefined' && navigator.onLine === false
+    const t = i18n.global.t as (key: string) => string
+    const message = isOffline ? t('networkOffline') : t('networkConnectFailed')
+    try {
+      notifyStore.addNotify(message)
+    } catch {}
+    throw error
+  },
+})
+```
 ## 言語設定
 
 ## 初期化
