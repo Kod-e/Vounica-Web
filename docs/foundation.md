@@ -27,6 +27,7 @@ export const apiBase = import.meta.env.VITE_API_BASE_URL
 - 認証後に token を自動注入する `api.ts`
 
 これにより、未ログイン時とログイン後で処理を分けつつ、どちらも OpenAPI 由来の型を利用して安全に API 呼び出しができます。
+
 ## OpenAPI Fetch Handler作成
 **目的**：認証まわり（token取得・自動更新・セッション切替）と、  
 共通ヘッダー／通知処理を **openapi-fetch のハンドラ** で一元化します。  
@@ -193,3 +194,32 @@ api.use({
 私はこの構成が一番シンプルで、UI と API の責務が明確になると感じました。
 
 ## 初期化
+
+フロントエンドのエントリーポイント `main.ts` では、Tailwind CSS の読み込みから始めて、  
+Vue アプリケーションの基本的な初期化を行います。Pinia（永続化プラグイン付き）、  
+vue-i18n、Vue Router、そして `installApiAuth` をそれぞれ登録し、  
+最後に `#app` にマウントしています。シンプルに全部ここでまとめて初期化しています。
+
+```ts
+import './assets/tailwind.css'
+
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import { i18n } from '@/plugins/i18n'
+import { installApiAuth } from '@/plugins/apiAuth'
+
+import App from './App.vue'
+import router from './router'
+
+const app = createApp(App)
+
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+app.use(pinia)
+app.use(i18n)
+app.use(router)
+app.use(installApiAuth)
+
+app.mount('#app')
+```
