@@ -219,7 +219,7 @@ function onSubmit() {
 - 本文は `stories` を `v-for` で並べる  
 - 下部は **前へ / 次へ** ボタン（`prevPage()` / `nextPage()`）
 
-``vue
+```vue
 <!-- タブ（PC） -->
 <nav class="-mb-px flex space-x-8" aria-label="Tabs">
   <a
@@ -230,9 +230,9 @@ function onSubmit() {
     class="whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium"
   >{{ tab.name }}</a>
 </nav>
-``
+```
 
-``vue
+```vue
 <!-- 一覧表示 -->
 <ul role="list" class="divide-y divide-gray-100">
   <li v-for="story in stories" :key="story.id!" class="py-5">
@@ -245,9 +245,9 @@ function onSubmit() {
     </div>
   </li>
 </ul>
-``
+```
 
-``vue
+```vue
 <!-- ページ操作 -->
 <div class="mt-8 flex justify-between">
   <button @click="storyStore.prevPage()">
@@ -257,15 +257,15 @@ function onSubmit() {
     {{ storyStore.isLoading ? 'Loading...' : t('nextPage') }}
   </button>
 </div>
-``
+```
 
-``ts
+```ts
 // 最小の初期化（setup）
 const storyStore = storyController()
 onMounted(() => { storyStore.fetchCategories() })
 const tabs = computed(() => storyStore.categories.map((c) => ({ name: c })))
 const stories = computed(() => storyStore.stories)
-``
+```
 
 ### 他 View との違い
 
