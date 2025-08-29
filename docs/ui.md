@@ -21,7 +21,7 @@ UI は大きく三つのレイヤーに分けています：
 --- 
 
 ## Route の外にある部分
-
+(src/App.vue)
 ```vue
   <AppBar>
     <div v-if="controller.is_open">
@@ -44,7 +44,7 @@ UI は大きく三つのレイヤーに分けています：
 ---
 
 ## Question Agent の画面
-
+(src/QuestionAgentView.vue)
 考え方は単純です。`questionAgent` の `events` は反応的なので、UI は自動で更新されます。  
 上から下への `v-for` だけで時系列に表示できます。受信トークンをそのまま積むことで、進捗のような見え方になります。  
 種類ごとに絵文字（またはアイコン）を付けて区別します。`ToolDescription` は複雑な tool call を読みやすい文字列に変換します（未対応のものは一時的に生 JSON を出します）。
@@ -103,9 +103,48 @@ UI は大きく三つのレイヤーに分けています：
 UI の動きはずっと一定で、別部品を使っているようには見えません。
 
 ## Record Agent の画面
+(src/RecordAgentView.vue)
 
 Record Agent の表示は Question Agent とほとんど同じ仕組みです。  
 Controller が持つ `events` を反応的に並べるだけで、UI は自動で更新されます。  
 
 そのためここで二度説明する必要はありません。  
 私はこの「同じ型で作れる」という構成がとても分かりやすいと思いました。
+
+
+## QuestionView
+(src/QuestionView.vue)
+
+```vue
+<template>
+  <div>
+    <div v-if="controller.status === 'presenting' || controller.status === 'answered'">
+      <QuestionRouteView />
+    </div>
+    <div v-else-if="controller.status === 'feedback'">
+      <QuestionRouteView />
+      <FeedBackOver />
+    </div>
+    <div v-else-if="controller.status === 'evaluating'">
+      <RecordAgentView />
+    </div>
+    <div v-else-if="controller.status === 'finished'">
+      <RecordFeedBackView />
+    </div>
+  </div>
+</template>
+```
+
+この画面は **question controller の状態** に合わせて、表示を切り替えます。  
+controller は問題の進行を管理する **有限状態の流れ** です。
+
+- **presenting / answered**：  
+  `QuestionRouteView` を表示します。`QuestionRouteView` は **現在の問題の種類** に合わせて条件表示します。
+- **feedback**：  
+  `QuestionRouteView` を出しつつ、正誤を知らせる `FeedBackOver` を重ねて表示します。
+- **evaluating**（記録中）：  
+  `RecordAgentView` を表示します。記録の経過をそのまま見せます。
+- **finished**（完了）：  
+  `RecordFeedBackView` を表示して、記録と問題の結果をまとめて見せます。
+
+私はこの切替が単純で分かりやすいと思いました。UI は状態を見るだけで、余計な処理を持ちません。
